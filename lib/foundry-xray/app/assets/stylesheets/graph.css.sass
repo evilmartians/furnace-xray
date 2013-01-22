@@ -1,4 +1,22 @@
 #layout
   height: 100%
 
-  .graph
+  svg
+    .node
+      rect
+        stroke-width: 2px
+        stroke: #333
+        fill: #fff
+      text
+        font: 300 10px
+      &:hover
+        cursor: pointer
+        opacity: 0.4
+
+    .edge
+      fill: none
+      stroke: #333
+      stroke-width: 2px
+      &:hover
+        cursor: pointer
+        opacity: 0.4

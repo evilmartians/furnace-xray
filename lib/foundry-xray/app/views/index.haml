@@ -7,7 +7,7 @@
     = stylesheet_link_tag 'app'
 
     :javascript
-      window.data = #{settings.foundry_json}
+      window.data = #{File.read settings.json_location}
   %body
     .loading-screen 
       %h1.loading-screen-foundry Foundry X-ray
@@ -18,7 +18,8 @@
         .loading-screen-copyright-label Evil Martians
 
     #layout
-      / TODO: @zoom
-      #graph
-      / TODO: @mini_map
-      / TODO: @timeline
+      #zoom
+      %svg{:height => "0", :width => "0"}
+        %defs
+          %marker#arrowhead{:markerHeight => "5", :markerUnits => "strokeWidth", :markerWidth => "8", :orient => "auto", :refX => "8", :refY => "5", :style => "fill: #333", :viewBox => "0 0 10 10"}
+            %path{:d => "M 0 0 L 10 5 L 0 10 z"}
