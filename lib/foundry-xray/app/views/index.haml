@@ -1,0 +1,24 @@
+!!!
+%html
+  %head
+    %title Foundry Xray
+
+    = javascript_include_tag 'application'
+    = stylesheet_link_tag 'app'
+
+    :javascript
+      window.data = #{settings.foundry_json}
+  %body
+    .loading-screen 
+      %h1.loading-screen-foundry Foundry X-ray
+      %h2.loading-screen-loading Loading
+
+      .loading-screen-copyright
+        %img.evil_martians-logo{:src => '/assets/evil_martians_bw_logo.svg'}
+        .loading-screen-copyright-label Evil Martians
+
+    #layout
+      / TODO: @zoom
+      #graph
+      / TODO: @mini_map
+      / TODO: @timeline

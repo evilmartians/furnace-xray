@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'active_support/all'
+require 'trollop'
+
+lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
+$LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
+
+require 'foundry-xray/app/app'
+
+opts = Trollop::options do
+  version "foundry-xray #{Foundry::Xray::VERSION}"
+    banner <<-EOS
+Usage: foundry [options] <filename>
+
+    EOS
+end
+
+Trollop::die "File not specified or does not exist" unless ARGV[0] && File.exist?(ARGV[0])
+
+Foundry::Xray::App.run! File.read(ARGV[0])

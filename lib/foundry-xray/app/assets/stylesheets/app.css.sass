@@ -1,0 +1,54 @@
+@import 'compass'
+
+// Layout 
+
+@import 'compass/reset'
+@import 'graph'
+
+html
+  height: 100%
+
+  body
+    height: 100%
+    font-family: monospace
+
+  .evil_martians-logo
+    width: 60px
+
+  // Loading screen
+
+  .loading-screen
+    background: #000618
+    position: absolute
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    color: white
+    +text-shadow(white 0 0 11px)
+    text-align: center
+
+  .loading-screen-foundry
+    font-weight: bold
+    font-size: 20px
+    margin-top: 100px
+
+  .loading-screen-loading
+    font-size: 14px
+    margin-top: 5px
+
+  .loading-screen-copyright
+    position: absolute
+    bottom: 5px
+    left: 0
+    right: 0
+    text-align: center
+    opacity: 0.4
+
+    .evil_martians-logo
+      margin-bottom: 5px
+
+  .loading-screen-copyright-label
+    font-size: 13px
+
+  //
