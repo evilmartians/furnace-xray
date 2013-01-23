@@ -113,7 +113,10 @@ class @Drawer
         d.y
       ).interpolate("linear") points
 
-    # Resize the SVG element
-    svgBBox = @svg.node().getBBox()
-    @svg.attr "width", svgBBox.width + 10
-    @svg.attr "height", svgBBox.height + 10
+    zoom = d3.behavior.zoom()
+      .on "zoom", =>
+        t = d3.event.translate
+        s = d3.event.scale
+        @svgGroup.attr("transform", "translate(" + t + ") scale(" + s + ")");
+
+    @svg.call zoom

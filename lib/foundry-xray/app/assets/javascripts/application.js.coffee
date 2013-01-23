@@ -7,7 +7,10 @@
 #= require_self
 
 $ ->
-  $('.loading-screen ').fadeOut(300)
+  resize = ->
+    $('svg').height -> $('html').height() - $('#toolbar').outerHeight()
+
+  resize() && $(window).bind 'resize', resize
 
   window.input = new Input window.data[0]
   window.input.rebuild()
