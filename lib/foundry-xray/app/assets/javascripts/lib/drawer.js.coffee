@@ -22,7 +22,7 @@ class @Drawer
 
   setupEntities: ->
     @svg = d3.select("svg")
-    @svgGroup = @svg.append("g").attr("transform", "translate(5, 5)")
+    @svgGroup = @svg.append("g")
 
     # `nodes` is center positioned for easy layout later
     @nodes = @svgGroup.selectAll("g .node")
@@ -116,8 +116,7 @@ class @Drawer
         d.y
       ).interpolate("linear") points
 
-    zoom = d3.behavior.zoom()
-      .on "zoom", =>
+    zoom = d3.behavior.zoom().on "zoom", =>
         t = d3.event.translate
         s = d3.event.scale
         @svgGroup.attr("transform", "translate(" + t + ") scale(" + s + ")");
