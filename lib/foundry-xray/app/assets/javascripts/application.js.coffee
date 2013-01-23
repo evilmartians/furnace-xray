@@ -28,25 +28,29 @@ $ ->
   # Setup slider
   slider.slider
     min: 0
-    change: -> $('#timeline input').val $(@).slider('value')
     slide: -> $('#timeline input').val $(@).slider('value')
+    change: -> $('#timeline input').val $(@).slider('value')
+
+  $('#timeline button').click ->
+    draw $('#timeline input').val().toNumber()
 
   # Draw routine
-  draw = ->
+  draw = (step) ->
     try
       $('#timeline').show()
 
       data = window.data[window.index.toNumber()]
+      step = data.events.length-1 unless step?
 
       slider.slider
         max: data.events.length-1
-        value: data.events.length-1
+        value: step
 
       $('#timeline #steps').text data.events.length-1
 
       window.drawer?.clear()
       window.input = new Input data
-      window.input.rebuild()
+      window.input.rebuild(step)
       window.drawer = new Drawer(new Graph(input))
 
       $('#title').removeClass('error').html window.input.function.title()

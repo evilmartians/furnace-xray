@@ -6,8 +6,8 @@ class @Input
     @function = new FunctionNode(@source.name, @source.events)
 
   rebuild: (step) ->
-    step ||= @function.events.length-1
-    stop   = [step, @function.events.length-1].min()
+    step = @function.events.length-1 unless step?
+    stop = [step, @function.events.length-1].min()
 
     # Clear storages
     @types           = Object.extended()
