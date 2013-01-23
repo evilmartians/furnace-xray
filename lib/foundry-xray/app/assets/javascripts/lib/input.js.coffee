@@ -14,10 +14,10 @@ class @Input
     @types  = {}
     @edges  = []
 
-    @blocks          = {}
-    @blocksMap       = []
-    @instructions    = {}
-    @instructionsMap = []
+    @blocks          = Object.extended()
+    @blocksMap       = new Map
+    @instructions    = Object.extended()
+    @instructionsMap = new Map
 
     # Function is our root node
     @nodes = [
@@ -40,46 +40,28 @@ class @Input
     # Now that our graph is ready we need to evaluate labels
     @nodes.each (n) -> n.label = n.label()
 
+
   setReturnType: (event) ->
     @function.setReturnType @types[event.return_type]
 
   setArguments: (event) ->
-    @function.setArguments(event.arguments.map (x) => new ArgumentNode(x.name, @types[x.type]))
+    @function.setArguments(event.arguments.map (x) =>
+      new ArgumentNode(x.name, @types[x.type]))
 
   addBasicBlock: (event) ->
-    id = @blocksMap.findIndex(event.name)
-
-    if id < 0
-      @blocksMap.add event.name
-      id = @blocksMap.length-1
-
-    @blocks[id] = new BlockNode(event.name)
-    @nodes.add {
-      edges: []
-      label: => @blocks[id].title()
-      block: id
-    }
+    @blocksMap.add event.name, (id) =>
+      @blocks[id] = new BlockNode(event.name)
 
   removeBasicBlock: (event) ->
-    id = @blocksMap.findIndex(event.name)
-    @blocksMap.splice(id, 1)
-
-    unless id < 0
+    @blocksMap.remove event.name, (id) =>
       delete @blocks[id]
-      @nodes.splice @nodes.findIndex((x) -> x.block == id), 1
 
   renameBasicBlock: (event) ->
-    id = @blocksMap.findIndex(event.name)
-
-    @blocksMap[id] = event.new_name
-    @blocks[id].setName(event.new_name)
+    @blocksMap.rename event.name, event.new_name, (id) =>
+      @blocks[id].setName(event.new_name)
 
   updateInstruction: (event) ->
-    id = @instructionsMap.findIndex(event.name)
-
-    if id < 0
-      @instructionsMap.add event.name
-      id = @instructionsMap.length-1
+    id = @instructionsMap.add event.name, (id) =>
       @instructions[id] = new InstructionNode
 
     operands = event.operands.map (x) =>

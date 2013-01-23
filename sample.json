@@ -19,6 +19,7 @@
     {"event":"add_instruction","name":"3","basic_block":"1","index":1},
     {"event":"update_instruction","name":"4","opcode":"return","parameters":"","operands":[{"kind":"constant","type":0,"value":"nil"}],"type":0},
     {"event":"add_instruction","name":"4","basic_block":"1","index":2},
+    {"event":"rename_basic_block","name":"1","new_name":"ololo"},
     {"event":"transform_start","name":"ResolveMethods"},
     {"event":"update_instruction","name":"3","opcode":"invoke","parameters":"","operands":[{"kind":"constant","type":3,"value":"\"Object:main\""},{"kind":"constant","type":1,"value":"{Object:17161480}"},{"kind":"constant","type":4,"value":"{Tuple []}"},{"kind":"constant","type":5,"value":"{nil}"}],"type":6},
     {"event":"remove_instruction","name":"2"},

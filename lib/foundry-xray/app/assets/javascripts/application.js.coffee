@@ -5,5 +5,5 @@
 $ ->
   $('.loading-screen ').fadeOut(300)
 
-  window.input = new Input window.data[1]
+  window.input = new Input window.data[0]
   window.drawer = new Drawer(input)
