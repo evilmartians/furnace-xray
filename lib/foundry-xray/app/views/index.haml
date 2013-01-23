@@ -14,16 +14,20 @@
       #tools
         #functions
           %select
-        #title
         #timeline
+          %button.left
+            &larr;
           .description
             %input{:type => 'text', :size => 3, :value => 0}
             \/
             %span#steps{:style => 'font-weight: bold'}
               0
           .slider
-          %button
+          %button.ok
+            ok
+          %button.right
             &rarr;
+        #title
 
 
       #logo

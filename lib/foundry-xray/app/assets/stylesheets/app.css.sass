@@ -46,8 +46,8 @@ html
         margin-bottom: 10px
         padding: 10px
         background-color: rgb(217, 214, 196)
-        border-radius: 0px 5px 5px 0px
-        width: 260px
+        border-right: 2px solid white
+        width: 340px
 
         .description
           input 
@@ -67,28 +67,28 @@ html
           width: 100px
         button
           float: left
-          margin-left: 20px
-          width: 30px
+          width: 35px
           height: 25px
           border-radius: 5px
-          background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(20%, #ffffff), color-stop(50%, #f6f6f6), color-stop(52%, #eeeeee), color-stop(100%, #f4f4f4))
-          background-image: -webkit-linear-gradient(top, #ffffff 20%, #f6f6f6 50%, #eeeeee 52%, #f4f4f4 100%)
-          background-image: -moz-linear-gradient(top, #ffffff 20%, #f6f6f6 50%, #eeeeee 52%, #f4f4f4 100%)
-          background-image: -o-linear-gradient(top, #ffffff 20%, #f6f6f6 50%, #eeeeee 52%, #f4f4f4 100%)
-          background-image: linear-gradient(#ffffff 20%, #f6f6f6 50%, #eeeeee 52%, #f4f4f4 100%)
-          border: 1px solid #aaaaaa
+          padding: 0px
+          font-size: 10px
           -webkit-box-shadow: 0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1)
           -moz-box-shadow   : 0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1)
           box-shadow        : 0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1)
           text-align: center
 
+        button.ok
+          margin-left: 20px
+        button.right
+          margin-left: 10px
+
       #title
         float: left
         height: 20px
         font-size: 14px
-        border-right: 2px solid white
         margin-top: 10px
         margin-bottom: 10px
+        border-radius: 0px 5px 5px 0px
         padding: 10px
         background-color: rgb(217, 214, 196)
         padding-top: 15px
@@ -96,8 +96,6 @@ html
         &.error
           font-weight: bold
           color: red
-          border-radius: 0px 5px 5px 0px
-          border-right: none
 
 
     #logo

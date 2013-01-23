@@ -31,8 +31,16 @@ $ ->
     slide: -> $('#timeline input').val $(@).slider('value')
     change: -> $('#timeline input').val $(@).slider('value')
 
-  $('#timeline button').click ->
+  $('#timeline button.ok').click ->
     draw $('#timeline input').val().toNumber()
+
+  $('#timeline button.left').click ->
+    draw $('#timeline input').val().toNumber()-1
+
+  $('#timeline button.right').click ->
+    draw $('#timeline input').val().toNumber()+1   
+
+  $('button').button()
 
   # Draw routine
   draw = (step) ->
