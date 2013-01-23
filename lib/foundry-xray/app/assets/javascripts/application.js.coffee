@@ -49,6 +49,7 @@ $ ->
 
       data = window.data[window.index.toNumber()]
       step = data.events.length-1 unless step?
+      zoom = window.drawer?.zoom()
 
       slider.slider
         max: data.events.length-1
@@ -60,6 +61,7 @@ $ ->
       window.input = new Input data
       window.input.rebuild(step)
       window.drawer = new Drawer(new Graph(input))
+      window.drawer.zoom(zoom) if zoom?
 
       $('#title').removeClass('error').html window.input.function.title()
     catch error

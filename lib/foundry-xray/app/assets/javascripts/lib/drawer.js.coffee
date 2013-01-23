@@ -123,3 +123,9 @@ class @Drawer
         @svgGroup.attr("transform", "translate(" + t + ") scale(" + s + ")");
 
     @svg.call zoom
+
+  zoom: (value) ->
+    unless value?
+      @svgGroup.attr("transform")
+    else
+      @svgGroup.attr("transform", value)
