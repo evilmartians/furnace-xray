@@ -1,41 +1,35 @@
-#layout
-  height: 100%
-  background-color: #E6E6E6
+svg
+  font-family: monospace
+  margin-left: 1%
+  width: 98%
+  border: 2px solid rgb(217, 214, 196)
+  border-radius: 5px 5px 0px 0px
+  background-color: white
 
-  #toolbar
-    height: 50px
-
-  svg
-    margin-left: 1%
-    width: 98%
-    border: 2px solid gray
-    border-radius: 5px 5px 0px 0px
-    background-color: white
-
-    .node
-      rect
-        stroke-width: 2px
-        stroke: #333
-        fill: #fff
-      text
-        font: 300 10px
-      &:hover
-        cursor: pointer
-        opacity: 0.4
-
-      b
-        font-weight: bold
-
-      i
-        font-style: italic
-
-      blockquote
-        padding-left: 1em
-
-    .edge
-      fill: none
-      stroke: #333
+  .node
+    rect
       stroke-width: 2px
-      &:hover
-        cursor: pointer
-        opacity: 0.4
+      stroke: #333
+      fill: #fff
+    text
+      font: 300 10px
+    &:hover
+      cursor: pointer
+      opacity: 0.4
+
+    b
+      font-weight: bold
+
+    i
+      font-style: italic
+
+    blockquote
+      padding-left: 1em
+
+  .edge
+    fill: none
+    stroke: #333
+    stroke-width: 2px
+    &:hover
+      cursor: pointer
+      opacity: 0.4

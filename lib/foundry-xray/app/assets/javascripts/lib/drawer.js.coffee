@@ -11,6 +11,9 @@ class @Drawer
     @setupEntitiesSizes()
     @draw()
 
+  clear: ->
+    @svg.select('g').remove()
+
   setupDagre: ->
     dagre.layout().nodeSep(50).edgeSep(10).rankSep(50)
       .nodes(@graph.nodes)

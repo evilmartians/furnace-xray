@@ -13,8 +13,8 @@ class @Input
     @types           = Object.extended()
     @blocks          = Object.extended()
     @instructions    = Object.extended()
-    @blocksMap       = new Map
-    @instructionsMap = new Map
+    @blocksMap       = new Map 'blocks'
+    @instructionsMap = new Map 'instructions'
 
     # Evaluating required steps
     i=0; while (i += 1) <= stop

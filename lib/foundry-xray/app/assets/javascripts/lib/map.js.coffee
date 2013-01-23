@@ -1,5 +1,5 @@
 class @Map
-  constructor: ->
+  constructor: (@title) ->
     @data = []
 
   add: (name, block) ->
@@ -16,8 +16,8 @@ class @Map
     id = @data.findIndex(name)
 
     if id < 0 
-      console.log printStackTrace()
-      throw "Not found"
+      error = "Map '#{@title}': '#{name}' element not found"
+      throw error
 
     id
 

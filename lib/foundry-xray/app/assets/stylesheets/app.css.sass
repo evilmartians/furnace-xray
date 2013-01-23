@@ -5,31 +5,71 @@
 @import 'compass/reset'
 @import 'graph'
 
+@import 'chosen'
+
 html
   height: 100%
 
   body
+    min-width: 900px
+    font-family: Arial
     height: 100%
-    font-family: monospace
+    background-color: rgb(236, 234, 223)
 
   #toolbar
-    h1
-      font-size: 20px
-      font-weight: bold
-      position: absolute
-      top: 5px
-      right: 84px
-      color: white
 
-    h2
-      font-size: 15px
-      position: absolute
-      top: 28px
-      right: 84px
-      color: white
+    #tools
+      #functions
+        float: left
+        height: 25px
+        font-size: 14px
+        border-radius: 5px 0px 0px 5px
+        border-right: 2px solid white
+        margin-top: 10px
+        margin-left: 12px
+        margin-bottom: 10px
+        padding: 10px
+        background-color: rgb(217, 214, 196)
+        width: 200px
 
-    .evil_martians-logo
-      width: 60px
-      position: absolute
-      top: 4px
-      right: 15px
+        select
+          width: 100%
+
+      #timeline
+        float: left
+        height: 25px
+        font-size: 14px
+        border-radius: 0px 5px 5px 0px
+        margin-top: 10px
+        margin-bottom: 10px
+        padding: 10px
+        background-color: rgb(217, 214, 196)
+        width: 400px
+
+        .message
+          padding-top: 5px
+          font-weight: bold
+          color: red
+          padding-left: 5px
+
+    #logo
+      h1
+        font-size: 20px
+        font-weight: bold
+        position: absolute
+        top: 15px
+        right: 84px
+        color: rgb(184, 52, 0)
+
+      h2
+        font-size: 15px
+        position: absolute
+        top: 38px
+        right: 84px
+        color: black
+
+      .evil_martians-logo
+        width: 60px
+        position: absolute
+        top: 11px
+        right: 15px
