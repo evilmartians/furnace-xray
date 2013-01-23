@@ -31,5 +31,5 @@ class @Map
     @data[id] = newName
     block(id) if block
 
-  locate: (name, container) ->
-    container[@find(name)]
+  locate: (name, block) ->
+    block(@find(name))

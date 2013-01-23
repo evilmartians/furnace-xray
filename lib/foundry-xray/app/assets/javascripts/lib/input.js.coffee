@@ -1,31 +1,20 @@
 #
-# Input mapper for a single function taken from JSON input
+# Internal representation of input JSON
 #
 class @Input
   constructor: (@source) ->
     @function = new FunctionNode(@source.name, @source.events)
-    @rebuild()
 
   rebuild: (step) ->
     step ||= @function.events.length-1
     stop   = [step, @function.events.length-1].min()
 
     # Clear storages
-    @types  = {}
-    @edges  = []
-
+    @types           = Object.extended()
     @blocks          = Object.extended()
-    @blocksMap       = new Map
     @instructions    = Object.extended()
+    @blocksMap       = new Map
     @instructionsMap = new Map
-
-    # Function is our root node
-    @nodes = [
-      {
-        edges: [],
-        label: => @function.title()
-      }
-    ]
 
     # Evaluating required steps
     i=0; while (i += 1) <= stop
@@ -36,10 +25,6 @@ class @Input
       else
         @[event.event]?(event)
         console.log "UNKNOWN EVENT: #{event.event}" unless @[event.event]?
-
-    # Now that our graph is ready we need to evaluate labels
-    @nodes.each (n) -> n.label = n.label()
-
 
   setReturnType: (event) ->
     @function.setReturnType @types[event.return_type]
@@ -67,4 +52,15 @@ class @Input
     operands = event.operands.map (x) =>
       new OperandNode x.kind, @types[x.type], x.name, x.value
 
-    @instructions[id].update event.opcode, event.name, event.parameters, operands, event.type
+    @instructions[id].update event.opcode, event.name, event.parameters, operands, @types[event.type]
+
+  addInstruction: (event) ->
+    @instructionsMap.locate event.name, (i) =>
+      @blocksMap.locate event.basic_block, (b) =>
+        @instructions[i].link @blocks[b], event.index
+
+  removeInstruction: (event) ->
+    @instructionsMap.locate event.name, (i) =>
+      @instructions[i].unlink()
+
+  transformStart: (event) ->

@@ -1,9 +1,10 @@
 #
+# Draws `Graph`
 # Dagre + D3.js wrapper
 #
 class @Drawer
 
-  constructor: (@input, padding=10) ->
+  constructor: (@graph, padding=10) ->
     @padding = padding
 
     @setupEntities()
@@ -12,9 +13,8 @@ class @Drawer
 
   setupDagre: ->
     dagre.layout().nodeSep(50).edgeSep(10).rankSep(50)
-      .nodes(@input.nodes)
-      .edges(@input.edges)
-      .debugLevel(1)
+      .nodes(@graph.nodes)
+      .edges(@graph.edges)
       .run()
 
   setupEntities: ->
@@ -23,14 +23,14 @@ class @Drawer
 
     # `nodes` is center positioned for easy layout later
     @nodes = @svgGroup.selectAll("g .node")
-      .data(@input.nodes)
+      .data(@graph.nodes)
       .enter()
       .append("g")
       .attr("class", "node")
       #.attr("id", (d) -> "node-" + d.label)
 
     @edges = @svgGroup.selectAll("path .edge")
-      .data(@input.edges)
+      .data(@graph.edges)
       .enter()
       .append("path")
       .attr("class", "edge")
@@ -41,8 +41,23 @@ class @Drawer
     @rects = @nodes.append("rect")
 
     # Append text
-    @labels = @nodes.append("text").attr("text-anchor", "middle").attr("x", 0)
-    @labels.append("tspan").attr("x", 0).attr("dy", "1em").text (d) -> d.label
+    @labels = @nodes.append("foreignObject")
+    @labels.append("xhtml:div").style
+      "float": "left"
+      "white-space": "nowrap"
+
+    @labels.select("div")
+      .html((d) -> d.label)
+      .each (d) ->
+        d.width = @clientWidth;
+        d.height = @clientHeight;
+        d.nodePadding = 0;
+
+    @labels
+      .attr("width", (d) -> d.width)
+      .attr("height", (d) -> d.height)
+    #.append("text").attr("text-anchor", "middle").attr("x", 0)
+    #@labels.append("tspan").attr("x", 0).attr("dy", "1em").text (d) -> d.label
 
   setupEntitiesSizes: ->
     padding = @padding

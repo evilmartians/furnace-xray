@@ -3,7 +3,10 @@ class @BlockNode
     @instructions = []
 
   title: ->
-    @name
+    "<b>#{@name}</b>:<br/>" +
+    "<blockquote>" + 
+      @instructions.map((x) -> x.title()).join("<br/>") + 
+    "</blockquote>"
 
   setName: (name) ->
     @name = name
@@ -12,4 +15,5 @@ class @BlockNode
     @instructions.splice index, 0, instruction
 
   removeInstruction: (instruction) ->
-    @instructions.splice @instructions.findIndex(instruction), 1
+    index = @instructions.findIndex(instruction)
+    @instructions.splice index, 1 unless index < 0
