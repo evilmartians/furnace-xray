@@ -8,4 +8,4 @@ class @FunctionNode
   setReturnType: (@type) ->
 
   title: ->
-    "#{@type?.title()} <b>#{@name}</b>(#{@arguments.map((x) -> x.title()).join(', ')})"
+    "#{@type?.title?() || '?'} <b>#{@name}</b>(#{@arguments.map((x) -> x.title()).join(', ')})"
