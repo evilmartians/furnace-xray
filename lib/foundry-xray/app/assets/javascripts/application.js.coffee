@@ -9,7 +9,9 @@
 #= require_self
 
 $ ->
-  svg = $('svg')
+  svg    = $('svg')
+  slider = $('#timeline .slider')
+  functions = $('#functions select')
   window.index = 0
 
   # Resize SVG canvas
@@ -17,29 +19,41 @@ $ ->
   resize() && $(window).bind 'resize', resize
 
   # Fill functions selector
-  functionsSelector = $('#functions select')
-  window.data.each (f, i) -> functionsSelector.append "<option value='#{i}'>#{f.name}</option>"
-  functionsSelector.chosen()
-  functionsSelector.change ->
-    window.index = functionsSelector.val()
+  window.data.each (f, i) -> functions.append "<option value='#{i}'>#{f.name}</option>"
+  functions.chosen()
+  functions.change ->
+    window.index = functions.val()
     draw()
 
-  # Initialize slider
-  $('#timeline .slider').slider()
+  # Setup slider
+  slider.slider
+    min: 0
+    change: -> $('#timeline input').val $(@).slider('value')
+    slide: -> $('#timeline input').val $(@).slider('value')
 
   # Draw routine
   draw = ->
     try
-      $('#timeline .message').hide()
+      $('#timeline').show()
+
+      data = window.data[window.index.toNumber()]
+
+      slider.slider
+        max: data.events.length-1
+        value: data.events.length-1
+
+      $('#timeline #steps').text data.events.length-1
+
       window.drawer?.clear()
-      window.input = new Input window.data[window.index.toNumber()]
+      window.input = new Input data
       window.input.rebuild()
       window.drawer = new Drawer(new Graph(input))
+
+      $('#title').removeClass('error').html window.input.function.title()
     catch error
       console.log error
-      $('#timeline .select').hide()
-      $('#timeline .message').show().text('Unable to build graph: problem dumped to console')
-      $('#timeline .message').effect('shake', distance: 3, times: 2)
+      $('#timeline').hide()
+      $('#title').addClass('error').text 'Unable to build graph: problem dumped to console'
 
   # Start with firts function
   draw()

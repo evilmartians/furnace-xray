@@ -8,6 +8,8 @@
 @import 'chosen.jquery'
 @import 'ui.jquery'
 
+@import 'elements'
+
 html
   height: 100%
 
@@ -40,52 +42,61 @@ html
         float: left
         height: 25px
         font-size: 14px
+        margin-top: 10px
+        margin-bottom: 10px
+        padding: 10px
+        background-color: rgb(217, 214, 196)
+        border-right: 2px solid white
+        width: 260px
+
+        .description
+          input 
+            height: 19px
+            border-radius: 5px
+            border: 1px solid #aaaaaa
+            -webkit-box-shadow: 0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1)
+            -moz-box-shadow   : 0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1)
+            box-shadow        : 0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1)
+
+          float: left
+          width: 100px
+          text-align: center
+        .slider
+          margin-top: 5px
+          float: left
+          width: 100px
+        button
+          float: left
+          margin-left: 20px
+          width: 30px
+          height: 25px
+          border-radius: 5px
+          background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(20%, #ffffff), color-stop(50%, #f6f6f6), color-stop(52%, #eeeeee), color-stop(100%, #f4f4f4))
+          background-image: -webkit-linear-gradient(top, #ffffff 20%, #f6f6f6 50%, #eeeeee 52%, #f4f4f4 100%)
+          background-image: -moz-linear-gradient(top, #ffffff 20%, #f6f6f6 50%, #eeeeee 52%, #f4f4f4 100%)
+          background-image: -o-linear-gradient(top, #ffffff 20%, #f6f6f6 50%, #eeeeee 52%, #f4f4f4 100%)
+          background-image: linear-gradient(#ffffff 20%, #f6f6f6 50%, #eeeeee 52%, #f4f4f4 100%)
+          border: 1px solid #aaaaaa
+          -webkit-box-shadow: 0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1)
+          -moz-box-shadow   : 0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1)
+          box-shadow        : 0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1)
+          text-align: center
+
+      #title
+        float: left
+        height: 20px
+        font-size: 14px
         border-radius: 0px 5px 5px 0px
         margin-top: 10px
         margin-bottom: 10px
         padding: 10px
         background-color: rgb(217, 214, 196)
-        width: 400px
+        padding-top: 15px
 
-        .message
-          padding-top: 5px
+        &.error
           font-weight: bold
           color: red
-          padding-left: 5px
 
-        .select
-          .description
-            input 
-              height: 19px
-              border-radius: 5px
-              border: 1px solid #aaaaaa
-              -webkit-box-shadow: 0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1)
-              -moz-box-shadow   : 0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1)
-              box-shadow        : 0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1)
-
-            float: left
-            width: 130px
-            text-align: center
-          .slider
-            margin-top: 5px
-            float: left
-            width: 220px
-          button
-            float: left
-            margin-left: 10px
-            width: 30px
-            height: 25px
-            border-radius: 5px
-            background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(20%, #ffffff), color-stop(50%, #f6f6f6), color-stop(52%, #eeeeee), color-stop(100%, #f4f4f4))
-            background-image: -webkit-linear-gradient(top, #ffffff 20%, #f6f6f6 50%, #eeeeee 52%, #f4f4f4 100%)
-            background-image: -moz-linear-gradient(top, #ffffff 20%, #f6f6f6 50%, #eeeeee 52%, #f4f4f4 100%)
-            background-image: -o-linear-gradient(top, #ffffff 20%, #f6f6f6 50%, #eeeeee 52%, #f4f4f4 100%)
-            background-image: linear-gradient(#ffffff 20%, #f6f6f6 50%, #eeeeee 52%, #f4f4f4 100%)
-            border: 1px solid #aaaaaa
-            -webkit-box-shadow: 0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1)
-            -moz-box-shadow   : 0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1)
-            box-shadow        : 0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1)
-            text-align: center
 
     #logo
       h1

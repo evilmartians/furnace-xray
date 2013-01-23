@@ -15,14 +15,15 @@
         #functions
           %select
         #timeline
-          .message
-          .select
-            .description
-              %input{:type => 'text', :size => 2, :value => 0}
-              of 132
-            .slider
-            %button
-              &rarr;
+          .description
+            %input{:type => 'text', :size => 3, :value => 0}
+            \/
+            %span#steps{:style => 'font-weight: bold'}
+              0
+          .slider
+          %button
+            &rarr;
+        #title
 
 
       #logo

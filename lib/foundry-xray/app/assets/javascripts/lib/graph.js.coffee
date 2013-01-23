@@ -7,12 +7,7 @@ class @Graph
 
     @edges = []
     # Function is our root node
-    @nodes = [
-      {
-        edges: [],
-        label: @input.function.title()
-      }
-    ]
+    @nodes = []
 
     @input.blocks.each (i, b) =>
       @nodes.add
