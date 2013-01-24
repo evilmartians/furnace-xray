@@ -50,9 +50,8 @@ $ ->
 
       data = window.data[window.index.toNumber()]
       step = data.events.length-1 unless step?
-      zoom = window.drawer?.zoom()
 
-      previousFunction = window.input?.function.name
+      Drawer.reset() if window.input?.function.name != data.name
 
       slider.slider
         max: data.events.length-1
@@ -60,15 +59,10 @@ $ ->
 
       $('#timeline #steps').text data.events.length-1
 
-      window.drawer?.clear()
+      Drawer.clear()
       window.input = new Input data
       window.input.rebuild(step)
       window.drawer = new Drawer(new Graph(input))
-
-      if previousFunction == data.name && zoom?
-        window.drawer.zoom(zoom)
-      else
-        window.drawer.svgGroup.attr("transform", "translate(20, 20)")
 
       $('#title').removeClass('error').html window.input.function.title()
     catch error

@@ -4,15 +4,34 @@
 #
 class @Drawer
 
+  @container: ->
+    @svg ||= d3.select("svg")
+
+    unless @group?
+      @group = @svg.append("g").attr("class", "container")
+
+      zoom = d3.behavior.zoom().on "zoom", =>
+          t = d3.event.translate
+          s = d3.event.scale
+          @group.attr("transform", "translate(" + t + ") scale(" + s + ")");
+
+      @svg.call zoom
+
+    @group
+
+  @clear: ->
+    @group?.select("g").remove()
+
+  @reset: ->
+    @group?.remove()
+    delete @group
+
   constructor: (@graph, padding=10) ->
     @padding = padding
 
     @setupEntities()
     @setupEntitiesSizes()
     @draw()
-
-  clear: ->
-    @svg.select('g').remove()
 
   setupDagre: ->
     dagre.layout().nodeSep(50).edgeSep(10).rankSep(50)
@@ -21,8 +40,7 @@ class @Drawer
       .run()
 
   setupEntities: ->
-    @svg = d3.select("svg")
-    @svgGroup = @svg.append("g")
+    @svgGroup = @constructor.container().append("g").attr("transform", "translate(20, 20)")
 
     # `nodes` is center positioned for easy layout later
     @nodes = @svgGroup.selectAll("g .node")
@@ -113,16 +131,3 @@ class @Drawer
       ).y((d) ->
         d.y
       ).interpolate("linear") points
-
-    zoom = d3.behavior.zoom().on "zoom", =>
-        t = d3.event.translate
-        s = d3.event.scale
-        @svgGroup.attr("transform", "translate(" + t + ") scale(" + s + ")");
-
-    @svg.call zoom
-
-  zoom: (value) ->
-    unless value?
-      @svgGroup.attr("transform")
-    else
-      @svgGroup.attr("transform", value)
