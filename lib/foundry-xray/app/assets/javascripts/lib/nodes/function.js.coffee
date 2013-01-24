@@ -1,6 +1,5 @@
 class @FunctionNode
-  constructor: (@name, @events) ->
-    @events.each (x) -> x.event = x.event.camelize(false)
+  constructor: (@name) ->
     @arguments = []
 
   setArguments: (@arguments) ->

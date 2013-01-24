@@ -11,111 +11,142 @@
 @import 'elements'
 
 html
-  height: 100%
 
   body
     min-width: 900px
     font-family: Arial
-    height: 100%
     background-color: rgb(236, 234, 223)
 
-  #toolbar
+    #toolbar
+      margin-left: 12px
+      float: left
 
-    #tools
-      #functions
-        float: left
-        height: 25px
-        font-size: 14px
-        border-radius: 5px 0px 0px 5px
-        border-right: 2px solid white
-        margin-top: 10px
-        margin-left: 12px
-        margin-bottom: 10px
-        padding: 10px
-        background-color: rgb(217, 214, 196)
-        width: 200px
+      #tools
+        & > div
+          height: 25px
+          float: left
+          font-size: 14px
+          margin-top: 10px
+          margin-bottom: 10px
+          padding: 10px
+          background-color: rgb(217, 214, 196)
 
-        select
+        #functions
+          border-radius: 5px 0px 0px 5px
+          border-right: 2px solid white
+          width: 200px
+
+          select
+            width: 100%
+
+        #title
+          height: 20px
+          border-radius: 0px 5px 5px 0px
+          padding-top: 15px
+
+          &.error
+            font-weight: bold
+            color: red
+
+      #logo
+        h1
+          font-size: 20px
+          font-weight: bold
+          position: absolute
+          top: 15px
+          right: 84px
+          color: rgb(184, 52, 0)
+
+        h2
+          font-size: 15px
+          position: absolute
+          top: 38px
+          right: 84px
+          color: black
+
+        .evil_martians-logo
+          width: 60px
+          position: absolute
+          top: 11px
+          right: 15px
+
+    table#container
+      width: 100%
+
+      td#canvas
+        padding-right: 12px
+
+        svg
           width: 100%
+          border: 2px solid rgb(217, 214, 196)
+          border-radius: 0px 5px 0px 0px
+          background-color: white
 
-      #timeline
-        float: left
-        height: 25px
-        font-size: 14px
-        margin-top: 10px
-        margin-bottom: 10px
-        padding: 10px
-        background-color: rgb(217, 214, 196)
-        border-right: 2px solid white
-        width: 340px
+      td#timeline
+        width: 1%
 
-        .description
-          input 
-            height: 19px
-            border-radius: 5px
-            border: 1px solid #aaaaaa
+        & > div
+          border: 2px solid rgb(217, 214, 196)
+          border-radius: 5px 0px 0px 0px
+          margin-left: 12px
+          background-color: rgb(217, 214, 196)
+          width: 50px
+
+          input, button
+            box-sizing: border-box
+            display: block
+            width: 90%
+            margin-left: 7%
+            margin-top: 10px
             -webkit-box-shadow: 0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1)
             -moz-box-shadow   : 0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1)
             box-shadow        : 0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1)
 
-          float: left
-          width: 100px
-          text-align: center
-        .slider
-          margin-top: 5px
-          float: left
-          width: 100px
-        button
-          float: left
-          width: 35px
-          height: 25px
-          border-radius: 5px
-          padding: 0px
-          font-size: 10px
-          -webkit-box-shadow: 0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1)
-          -moz-box-shadow   : 0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1)
-          box-shadow        : 0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1)
-          text-align: center
+          input
+            height: 19px
+            border-radius: 5px
+            border: 1px solid #aaaaaa
 
-        button.ok
-          margin-left: 20px
-        button.right
-          margin-left: 10px
+          .slider
+            margin-top: 20px
+            margin-left: 6px
+            margin-bottom: 20px
+            width: 40px
+            z-index: 200
 
-      #title
-        float: left
-        height: 20px
-        font-size: 14px
-        margin-top: 10px
-        margin-bottom: 10px
-        border-radius: 0px 5px 5px 0px
-        padding: 10px
-        background-color: rgb(217, 214, 196)
-        padding-top: 15px
+            a
+              z-index: 200
+              margin-left: 13px
+              outline: none
+              cursor: pointer
 
-        &.error
-          font-weight: bold
-          color: red
+            #transforms
+              height: 100%
 
+              .label
+                cursor: pointer
+                z-index: 100
+                position: absolute
+                width: 100%
+                border-radius: 6px
+                background-color: rgb(184, 52, 0)
+                opacity: 0.3
 
-    #logo
-      h1
-        font-size: 20px
-        font-weight: bold
-        position: absolute
-        top: 15px
-        right: 84px
-        color: rgb(184, 52, 0)
+                &:hover
+                  opacity: 1
 
-      h2
-        font-size: 15px
-        position: absolute
-        top: 38px
-        right: 84px
-        color: black
+                span
+                  display: none
+                  position: absolute
+                  padding: 2px
+                  background: white
+                  border: 1px solid black
+                  margin-left: 48px
+                  font-size: 10px
 
-      .evil_martians-logo
-        width: 60px
-        position: absolute
-        top: 11px
-        right: 15px
+          button
+            height: 25px
+            border-radius: 5px
+            padding: 0px
+            font-size: 10px
+            text-align: center

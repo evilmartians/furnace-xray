@@ -5,69 +5,115 @@
 #= require vendor/sugar-1.3.8
 #= require vendor/stacktrace-0.4
 #= require vendor/chosen.jquery
+#= require vendor/qtip.jquery
 #= require_tree ./lib
 #= require_self
 
-# TODO: ZOMG!!! REFACTOR ME PLZ :cry: :scream: ;((((
-$ ->
-  svg    = $('svg')
-  slider = $('#timeline .slider')
-  functions = $('#functions select')
-  window.index = 0
+$ -> window.app = new Application
 
-  # Resize SVG canvas
-  resize = -> svg.height $('html').height() - $('#toolbar').outerHeight()
-  resize() && $(window).bind 'resize', resize
+class Application
 
-  # Fill functions selector
-  window.data.each (f, i) -> functions.append "<option value='#{i}'>#{f.name}</option>"
-  functions.chosen()
-  functions.change ->
-    window.index = functions.val()
-    draw()
+  constructor: ->
+    @data = window.data
 
-  # Setup slider
-  slider.slider
-    min: 0
-    slide: -> $('#timeline input').val $(@).slider('value')
-    change: -> $('#timeline input').val $(@).slider('value')
+    @toolbar  = $('#toolbar')
+    @title    = $('#title')
+    @selector = $('#functions select')
 
-  $('#timeline button.ok').click ->
-    draw $('#timeline input').val().toNumber()
+    @container   = $('#container')
+    @timeline    = $('#timeline')
+    @slider      = $('#timeline .slider')
+    @sliderInput = $('#timeline input')
+    @sliderApply = $('#timeline button.ok')
+    @sliderNext  = $('#timeline button.next')
+    @sliderPrev  = $('#timeline button.prev')
+    @transforms  = $('#transforms')
 
-  $('#timeline button.left').click ->
-    draw $('#timeline input').val().toNumber()-1
 
-  $('#timeline button.right').click ->
-    draw $('#timeline input').val().toNumber()+1   
+    @currentFunction = 0
+    @currentStep     = undefined
 
-  $('button').button()
+    @setupContainer()
+    @buildSelector()
+    @buildSlider()
 
-  # Draw routine
-  draw = (step) ->
+    @draw()
+
+  draw: ->
     try
-      $('#timeline').show()
+      @timeline.show()
 
-      data = window.data[window.index.toNumber()]
+      input = @data[@currentFunction]
 
-      Drawer.reset() if window.input?.function.name != data.name
+      Drawer.reset() if @input?.source.name != input.source.name
       Drawer.clear()
 
-      window.input = new Input data
-      window.input.rebuild(step)
-      window.drawer = new Drawer(new Graph(input))
+      @input = input
+      @input.rebuild(@currentStep)
+      @drawer = new Drawer(new Graph(@input))
 
-      slider.slider
-        max: window.input.events.length-1
-        value: window.input.stop
-
-      $('#timeline #steps').text window.input.events.length-1
-
-      $('#title').removeClass('error').html window.input.function.title()
+      @renewSlider()
+      @title.removeClass('error').html @input.function.title()
     catch error
       console.log error
-      $('#timeline').hide()
-      $('#title').addClass('error').text 'Unable to build graph: problem dumped to console'
+      @timeline.hide()
+      @title.addClass('error').text 'Unable to build graph: problem dumped to console'
 
-  # Start with firts function
-  draw()
+  renewSlider: (max, value) ->
+    @slider.slider
+      max: @input.events.length-1
+      value: @input.stop
+
+    @slider.find('.label').remove()
+
+    @input.transforms.each (entry) =>
+      height = entry.length/(@input.events.length-1)*100
+      top    = 100-entry.id/(@input.events.length-1)*100-height
+
+      @transforms.append $("<div class='label'><span>#{entry.label}</span></div>")
+        .attr("style", "top: #{top}%; height: #{height}%;")
+        .click (e) =>
+          e.stopPropagation()
+          @currentStep = entry.id
+          @draw()
+
+  setupContainer: ->
+    resize = => 
+      @container.find('.stretch').height($(window).height() - @toolbar.outerHeight() - 4)
+      @slider.height($(window).height() - @toolbar.outerHeight() - 300)
+
+    resize() && $(window).bind('resize', resize)
+
+  buildSelector: ->
+    @data.each (f, i) =>
+      @selector.append "<option value='#{i}'>#{f.source.name}</option>"
+
+    @selector.chosen().change =>
+      @currentFunction = @selector.val().toNumber()
+      @currentStep = undefined
+      @draw()
+
+  buildSlider: ->
+    input = @sliderInput
+
+    $('button').button()
+
+    @slider.slider
+      min: 0
+      orientation: 'vertical'
+      change: -> input.val $(@).slider('value')
+
+    @slider.on 'mouseenter', '.label', -> $(this).find('span').show()
+    @slider.on 'mouseout', '.label', -> $(this).find('span').hide()
+
+    @sliderApply.click =>
+      @currentStep = input.val().toNumber()
+      @draw()
+
+    @sliderPrev.click =>
+      @currentStep = input.val().toNumber()-1
+      @draw()
+
+    @sliderNext.click =>
+      @currentStep = input.val().toNumber()+1
+      @draw()

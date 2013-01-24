@@ -2,15 +2,46 @@
 # Internal representation of input JSON
 #
 class @Input
-  constructor: (@source) ->
-    @function = new FunctionNode(@source.name, @source.events)
+  @normalize: (data) ->
+    data.map (x) -> new Input(x)
 
+  constructor: (@source) ->
+    @source.events.each (x) -> x.event = x.event.camelize(false)
+
+    # Scan for effective events
     @events = []
-    @function.events.filter (x, i) =>
-      unless ['type', 'transformStart'].any(x.event)
-        @events.add i
+    reducer = []
+    transforms = Object.extended()
+
+    @source.events.each (x, i) =>
+      switch x.event 
+        when 'addInstruction'
+          reducer.add x.name
+          @events.add i
+        when 'removeInstruction'
+          reducer.exclude x.name
+          @events.add i
+        when 'updateInstruction'
+          @events.add i if reducer.any(x.name)
+        when 'type', 'transformStart'
+        else
+          @events.add i
+
+      if x.event == 'transformStart'
+        id = @events.length-1
+
+        unless transforms[id]
+          transforms[id] = {id: id, label: x.name}
+
+    @transforms = transforms.values()
+    @transforms = @transforms.filter (x, i) => 
+      x.length = (@transforms[i+1]?.id || @events.length) - x.id
+      x.id < @events.length-1
+          
 
   rebuild: (step) ->
+    @function = new FunctionNode(@source.name)
+
     step  = @events.length-1 unless step?
     @stop = [step, @events.length-1].min()
 
@@ -24,7 +55,7 @@ class @Input
 
     # Evaluating required steps
     i=-1; while (i += 1) <= @events[@stop]
-      event = @function.events[i]
+      event = @source.events[i]
 
       if event.event == 'type'
         @types[event.id] = new TypeNode(event.kind, event.name, event.parameters)

@@ -7,34 +7,41 @@
     = stylesheet_link_tag 'app'
 
     :javascript
-      window.data = #{File.read settings.json_location}
+      window.data = Input.normalize(#{File.read settings.json_location})
   %body
 
     #toolbar
       #tools
         #functions
           %select
-        #timeline
-          %button.left
-            &larr;
-          .description
-            %input{:type => 'text', :size => 3, :value => 0}
-            \/
-            %span#steps{:style => 'font-weight: bold'}
-              0
-          .slider
-          %button.ok
-            ok
-          %button.right
-            &rarr;
         #title
-
 
       #logo
         %h1 Foundry X-Ray
         %h2 version: #{Foundry::Xray::VERSION}
         %img.evil_martians-logo{:src => '/assets/evil_martians_logo.svg'}
-    %svg
-      %defs
-        %marker#arrowhead{:markerHeight => "5", :markerUnits => "strokeWidth", :markerWidth => "8", :orient => "auto", :refX => "8", :refY => "5", :style => "fill: #333", :viewBox => "0 0 10 10"}
-          %path{:d => "M 0 0 L 10 5 L 0 10 z"}
+
+    %br{:style => 'clear:both'}
+
+    %table#container
+      %tr
+        %td#timeline
+          %div.stretch
+            %button.fnext
+              &uarr; &uarr;
+            %button.next
+              &uarr;
+            %input{:type => 'text', :size => 3, :value => 0}
+            .slider
+              #transforms
+            %button.ok
+              ok
+            %button.prev
+              &darr;
+            %button.fprev
+              &darr; &darr;
+        %td#canvas
+          %svg.stretch
+            %defs
+              %marker#arrowhead{:markerHeight => "5", :markerUnits => "strokeWidth", :markerWidth => "8", :orient => "auto", :refX => "8", :refY => "5", :style => "fill: #333", :viewBox => "0 0 10 10"}
+                %path{:d => "M 0 0 L 10 5 L 0 10 z"}
