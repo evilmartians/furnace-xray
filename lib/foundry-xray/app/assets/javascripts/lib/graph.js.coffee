@@ -5,6 +5,7 @@
 class @Graph
   constructor: (@input) ->
 
+    @edges     = []
     blockNodes = Object.extended()
 
     @input.blocks.each (i, b) ->
@@ -13,12 +14,13 @@ class @Graph
         label: b.name
         data: b.title()
 
-    blockNodes.each (i, n) ->
-      n.edges = n.edges.map((x) -> {source: n, target: blockNodes[x], data: blockNodes[x].label})
+    blockNodes.each (i, n) =>
+      edges = []
 
-    @edges = []
+      n.edges.each (x) =>
+        edges.add {source: n, target: blockNodes[x], data: blockNodes[x].label}
+        @edges.add edges.last()
+
+      n.edges = edges
+
     @nodes = blockNodes.values()
-
-    @nodes.each (x) =>
-      x.edges.each (y) =>
-        @edges.add y
