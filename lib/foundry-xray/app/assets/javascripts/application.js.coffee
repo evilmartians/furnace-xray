@@ -5,7 +5,6 @@
 #= require vendor/sugar-1.3.8
 #= require vendor/stacktrace-0.4
 #= require vendor/chosen.jquery
-#= require vendor/qtip.jquery
 #= require_tree ./lib
 #= require_self
 
