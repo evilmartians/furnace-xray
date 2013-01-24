@@ -3,7 +3,7 @@ class @BlockNode
     @instructions = []
 
   title: ->
-    "<b>#{@name}</b>:<br/>" +
+    "#{@name}:<br/>" +
     "<blockquote>" + 
       @instructions.map((x) -> x.title()).join("<br/>") + 
     "</blockquote>"

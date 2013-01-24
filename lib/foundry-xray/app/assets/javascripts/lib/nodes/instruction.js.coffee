@@ -23,6 +23,6 @@ class @InstructionNode
       operands = @operands.map (x) -> x.title()
 
     if @type.kind == 'void'
-      "#{@opcode} #{@parameters} #{operands.join(', ')}"
+      "<b>#{@opcode}</b> #{@parameters} #{operands.join(', ')}"
     else
-      "#{@type.title()} %#{@name} = #{@opcode} #{@parameters} #{operands.join(', ')}"
+      "#{@type.title()} %#{@name} = <b>#{@opcode}</b> #{@parameters} #{operands.join(', ')}"

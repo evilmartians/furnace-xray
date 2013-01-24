@@ -8,4 +8,4 @@ class @TypeNode
       when 'monotype' then @name
       when 'parametric' then "#{@name}<#{@parameters.map((x) -> x.title()).join(', ')}>"
 
-    "<i>#{type}</i>"
+    "<i class='type'>#{type}</i>"

@@ -1,6 +1,6 @@
 #
-# Draws `Graph`
-# Dagre + D3.js wrapper
+# Graph drawing routines.
+# Drawer manages SVG canvas exclusively – avoid interferention
 #
 class @Drawer
 

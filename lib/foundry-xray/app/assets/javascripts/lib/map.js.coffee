@@ -1,3 +1,6 @@
+#
+# Failsafe Map container
+#
 class @Map
   constructor: (@title) ->
     @data = []
