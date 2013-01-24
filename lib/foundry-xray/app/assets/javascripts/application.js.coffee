@@ -70,8 +70,9 @@ class Application
       height = entry.length/(@input.events.length-1)*100
       top    = 100-entry.id/(@input.events.length-1)*100-height
       label  = "#{entry.label}&nbsp;(#{entry.id}+#{entry.length})"
+      klass  = if @currentStep >= entry.id && @currentStep < entry.id+entry.length then "current" else ""
 
-      @transforms.append $("<div class='label'><span>#{label}</span></div>")
+      @transforms.append $("<div class='label #{klass}'><span>#{label}</span></div>")
         .attr("style", "top: #{top}%; height: #{height}%;")
         .click (e) =>
           e.stopPropagation()
