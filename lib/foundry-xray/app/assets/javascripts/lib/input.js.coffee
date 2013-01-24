@@ -17,7 +17,7 @@ class @Input
     @instructionsMap = new Map 'instructions'
 
     # Evaluating required steps
-    i=0; while (i += 1) <= stop
+    i=-1; while (i += 1) <= stop
       event = @function.events[i]
 
       if event.event == 'type'
@@ -26,12 +26,20 @@ class @Input
         @[event.event]?(event)
         console.log "UNKNOWN EVENT: #{event.event}" unless @[event.event]?
 
+  type: (id) ->
+    return undefined unless id?
+
+    if type = @types[id]
+      return type
+    else
+      throw "Type #{id} not found in #{@types.keys().join(',')}"
+
   setReturnType: (event) ->
-    @function.setReturnType @types[event.return_type]
+    @function.setReturnType @type(event.return_type)
 
   setArguments: (event) ->
     @function.setArguments(event.arguments.map (x) =>
-      new ArgumentNode(x.name, @types[x.type]))
+      new ArgumentNode(x.name, @type(x.type)))
 
   addBasicBlock: (event) ->
     @blocksMap.add event.name, (id) =>
@@ -50,9 +58,9 @@ class @Input
       @instructions[id] = new InstructionNode
 
     operands = event.operands.map (x) =>
-      new OperandNode x.kind, @types[x.type], x.name, x.value
+      new OperandNode x.kind, @type(x.type), x.name, x.value
 
-    @instructions[id].update event.opcode, event.name, event.parameters, operands, @types[event.type]
+    @instructions[id].update event.opcode, event.name, event.parameters, operands, @type(event.type)
 
   addInstruction: (event) ->
     @instructionsMap.locate event.name, (i) =>

@@ -50,7 +50,7 @@ class @Drawer
       "white-space": "nowrap"
 
     @labels.select("div")
-      .html((d) -> d.label)
+      .html((d) -> d.data)
       .each (d) ->
         d.width = @clientWidth;
         d.height = @clientHeight;
@@ -59,8 +59,6 @@ class @Drawer
     @labels
       .attr("width", (d) -> d.width)
       .attr("height", (d) -> d.height)
-    #.append("text").attr("text-anchor", "middle").attr("x", 0)
-    #@labels.append("tspan").attr("x", 0).attr("dy", "1em").text (d) -> d.label
 
   setupEntitiesSizes: ->
     padding = @padding

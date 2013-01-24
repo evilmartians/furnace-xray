@@ -17,3 +17,6 @@ class @BlockNode
   removeInstruction: (instruction) ->
     index = @instructions.findIndex(instruction)
     @instructions.splice index, 1 unless index < 0
+
+  references: ->
+    @instructions.last()?.operands.findAll((x) -> x.kind == "basic_block").map((x) -> x.name) || []

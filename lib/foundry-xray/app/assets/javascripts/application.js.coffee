@@ -8,6 +8,7 @@
 #= require_tree ./lib
 #= require_self
 
+# TODO: ZOMG!!! REFACTOR ME PLZ :cry: :scream: ;((((
 $ ->
   svg    = $('svg')
   slider = $('#timeline .slider')
