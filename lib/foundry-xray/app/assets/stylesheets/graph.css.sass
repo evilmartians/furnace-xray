@@ -6,7 +6,7 @@ svg
   border-radius: 5px 5px 0px 0px
   background-color: white
 
-  .node
+  g.node
     rect
       stroke-width: 2px
       stroke: #333
@@ -17,10 +17,15 @@ svg
       cursor: pointer
       opacity: 0.4
 
-  .edge
-    fill: none
-    stroke: #333
-    stroke-width: 2px
-    &:hover
-      cursor: pointer
-      opacity: 0.4
+  g.edge
+    rect
+      opacity: 0.9
+      stroke-width: 0px
+      fill: #fff
+    path
+      fill: none
+      stroke: #333
+      stroke-width: 2px
+      &:hover
+        cursor: pointer
+        opacity: 0.4

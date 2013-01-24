@@ -14,7 +14,7 @@ class @Graph
         data: b.title()
 
     blockNodes.each (i, n) ->
-      n.edges = n.edges.map((x) -> {source: n, target: blockNodes[x]})
+      n.edges = n.edges.map((x) -> {source: n, target: blockNodes[x], data: blockNodes[x].label})
 
     @edges = []
     @nodes = blockNodes.values()
