@@ -5,19 +5,25 @@ class @Input
   constructor: (@source) ->
     @function = new FunctionNode(@source.name, @source.events)
 
+    @events = []
+    @function.events.filter (x, i) =>
+      unless ['type', 'transformStart'].any(x.event)
+        @events.add i
+
   rebuild: (step) ->
-    step = @function.events.length-1 unless step?
-    stop = [step, @function.events.length-1].min()
+    step  = @events.length-1 unless step?
+    @stop = [step, @events.length-1].min()
 
     # Clear storages
     @types           = Object.extended()
     @blocks          = Object.extended()
     @instructions    = Object.extended()
+    @visibleEvents   = Object.extended()
     @blocksMap       = new Map 'blocks'
     @instructionsMap = new Map 'instructions'
 
     # Evaluating required steps
-    i=-1; while (i += 1) <= stop
+    i=-1; while (i += 1) <= @events[@stop]
       event = @function.events[i]
 
       if event.event == 'type'

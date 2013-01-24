@@ -54,7 +54,7 @@ class @Drawer
       .attr("marker-end", "url(#arrowhead)")
 
     @assignHtmlLabels(@nodes)
-    @assignTextLabels(@edges, 2) 
+    @assignTextLabels(@edges, 1) 
 
   assignTextLabels: (items, padding) ->
     groups = items.append("g").attr("class", "label")

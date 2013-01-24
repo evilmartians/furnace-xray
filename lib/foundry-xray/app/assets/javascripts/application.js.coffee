@@ -49,20 +49,19 @@ $ ->
       $('#timeline').show()
 
       data = window.data[window.index.toNumber()]
-      step = data.events.length-1 unless step?
 
       Drawer.reset() if window.input?.function.name != data.name
-
-      slider.slider
-        max: data.events.length-1
-        value: step
-
-      $('#timeline #steps').text data.events.length-1
-
       Drawer.clear()
+
       window.input = new Input data
       window.input.rebuild(step)
       window.drawer = new Drawer(new Graph(input))
+
+      slider.slider
+        max: window.input.events.length-1
+        value: window.input.stop
+
+      $('#timeline #steps').text window.input.events.length-1
 
       $('#title').removeClass('error').html window.input.function.title()
     catch error
