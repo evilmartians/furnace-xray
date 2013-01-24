@@ -69,8 +69,9 @@ class Application
     @input.transforms.each (entry) =>
       height = entry.length/(@input.events.length-1)*100
       top    = 100-entry.id/(@input.events.length-1)*100-height
+      label  = "#{entry.label}&nbsp;(#{entry.id}+#{entry.length})"
 
-      @transforms.append $("<div class='label'><span>#{entry.label}</span></div>")
+      @transforms.append $("<div class='label'><span>#{label}</span></div>")
         .attr("style", "top: #{top}%; height: #{height}%;")
         .click (e) =>
           e.stopPropagation()
