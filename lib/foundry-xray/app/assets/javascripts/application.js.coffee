@@ -90,8 +90,11 @@ class Application
     resize() && $(window).bind('resize', resize)
 
   buildSelector: ->
-    @data.each (f, i) =>
-      @selector.append "<option value='#{i}'>#{f.source.name}</option>"
+    Object.extended('Active': true, 'Inactive': false).each (label, condition) =>
+      group = $("<optgroup label='#{label}'>")
+      @data.findAll((x) -> x.source.present == condition).each (f, i) =>
+        group.append "<option value='#{i}'>#{f.source.name}</option>"
+      @selector.append group
 
     @selector.chosen(search_contains: true).change =>
       @currentFunction = @selector.val().toNumber()
