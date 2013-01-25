@@ -38,7 +38,9 @@ class Application
 
     @draw()
 
-  draw: ->
+  draw: (step) ->
+    @currentStep = step
+
     try
       @timeline.show()
 
@@ -73,10 +75,9 @@ class Application
 
       @transforms.append $("<div class='label #{klass}'><span>#{label}</span></div>")
         .attr("style", "top: #{top}%; height: #{height}%;")
-        .click (e) =>
+        .mousedown (e) =>
           e.stopPropagation()
-          @currentStep = entry.id
-          @draw()
+          @draw entry.id
 
   setupContainer: ->
     resize = => 
@@ -91,30 +92,24 @@ class Application
 
     @selector.chosen().change =>
       @currentFunction = @selector.val().toNumber()
-      @currentStep = undefined
       @draw()
 
   buildSlider: ->
-    input = @sliderInput
-
     $('button').button()
 
     @slider.slider
       min: 0
       orientation: 'vertical'
-      change: -> input.val $(@).slider('value')
+      change: (event) =>
+        @sliderInput.val @slider.slider('value')
+        # Redraw if triggered by manual slider scroll
+        @draw @sliderInput.val().toNumber() if event.originalEvent
+
+    @slider.unbind('keydown')
+    @slider.unbind('keyup')
 
     @slider.on 'mouseenter', '.label', -> $(this).find('span').show()
     @slider.on 'mouseout', '.label', -> $(this).find('span').hide()
 
-    @sliderApply.click =>
-      @currentStep = input.val().toNumber()
-      @draw()
-
-    @sliderPrev.click =>
-      @currentStep = input.val().toNumber()-1
-      @draw()
-
-    @sliderNext.click =>
-      @currentStep = input.val().toNumber()+1
-      @draw()
+    @sliderPrev.click => @draw @currentStep-1
+    @sliderNext.click => @draw @currentStep+1
