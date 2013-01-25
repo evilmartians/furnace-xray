@@ -9,10 +9,15 @@ require 'sass'
 require 'compass'
 require 'coffee-script'
 
+require_relative '../lib/jst_pages'
+
 module Foundry
   module Xray
     class App < Sinatra::Base
       register Sinatra::Sprockets
+      register Sinatra::JstPages
+
+      serve_jst '/jst.js'
 
       Compass.configuration do |config|
         config.project_path = File.dirname(__FILE__)

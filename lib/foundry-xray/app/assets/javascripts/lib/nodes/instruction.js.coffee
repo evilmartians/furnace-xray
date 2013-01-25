@@ -17,7 +17,7 @@ class @InstructionNode
       if x instanceof OperandNode
         x.title()
       else
-        "#{x[0]} => #{x[1].title()}"
+        "%#{x[0]} => #{x[1].title()}"
 
     if @type.kind == 'void'
       "<b>#{@opcode}</b> #{@parameters} #{operands.join(', ')}"
