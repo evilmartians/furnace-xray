@@ -82,7 +82,7 @@ class Application
   setupContainer: ->
     resize = => 
       @container.find('.stretch').height($(window).height() - @toolbar.outerHeight() - 4)
-      @slider.height($(window).height() - @toolbar.outerHeight() - 300)
+      @slider.height($(window).height() - @toolbar.outerHeight() - 250)
 
     resize() && $(window).bind('resize', resize)
 
