@@ -72,16 +72,21 @@ class @Drawer
     groups = items.append("g").attr("class", "label")
     rects  = groups.append("rect")
     labels = groups.append("foreignObject")
-    labels.append("xhtml:div").style
+    texts = labels.append("xhtml:div").style
       "float": "left"
       "white-space": "nowrap"
 
-    labels.select("div")
-      .html((d) -> d.data)
+    texts.html((d) -> d.data).each (d) ->
+      if @clientWidth > 500
+        d3.select(@).style
+          "white-space": "normal"
+          "width": '500px'
+
+    texts
       .each (d) ->
-        d.width = @clientWidth;
-        d.height = @clientHeight;
-        d.nodePadding = 0;
+        d.width = @clientWidth
+        d.height = @clientHeight
+        d.nodePadding = 0
 
     labels
       .attr("width", (d) -> d.width)
