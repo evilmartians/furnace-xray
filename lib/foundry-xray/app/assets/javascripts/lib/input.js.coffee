@@ -29,9 +29,7 @@ class @Input
 
       if x.event == 'transformStart'
         id = @events.length-1
-
-        unless transforms[id]
-          transforms[id] = {id: id, label: x.name}
+        transforms[id] = {id: id, label: x.name}
 
     @transforms = transforms.values()
     @transforms = @transforms.filter (x, i) => 
