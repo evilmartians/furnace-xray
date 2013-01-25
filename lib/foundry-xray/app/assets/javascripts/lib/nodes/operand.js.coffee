@@ -4,6 +4,9 @@ class @OperandNode
 
   title: ->
     switch @kind
-      when 'constant' then "#{@type.title()} #{@value}"
-      when 'instruction' then "%#{@name}"
-      when 'basic_block' then "label %#{@name}"
+      when 'instruction' then JST['nodes/operand_instruction'] name: @name
+      when 'basic_block' then JST['nodes/operand_basic_block'] name: @name
+      when 'constant' 
+        JST['nodes/operand_constant']
+          type: @type.title()
+          value: @value

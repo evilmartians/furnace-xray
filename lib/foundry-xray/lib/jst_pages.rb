@@ -137,10 +137,7 @@ module Sinatra
           content_type :js
           jsts = jst_files.map { |(name, engine)|
             %{
-              JST[#{name.inspect}] = function() {
-                if (!c[#{name.inspect}]) c[#{name.inspect}] = (#{engine.function});
-                return c[#{name.inspect}].apply(this, arguments);
-              };
+              JST[#{name.inspect}] = (#{engine.function});
           }.strip.gsub(/^ {12}/, '')
           }
 

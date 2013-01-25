@@ -2,4 +2,6 @@ class @ArgumentNode
   constructor: (@name, @type) ->
 
   title: ->
-    "#{@type.title()} #{@name}"
+    JST['nodes/argument']
+      type: @type.title()
+      name: @name

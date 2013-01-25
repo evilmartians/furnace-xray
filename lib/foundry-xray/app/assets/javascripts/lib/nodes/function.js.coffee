@@ -7,4 +7,7 @@ class @FunctionNode
   setReturnType: (@type) ->
 
   title: ->
-    "#{@type?.title?() || '?'} <b>#{@name}</b>(#{@arguments.map((x) -> x.title()).join(', ')})"
+    JST['nodes/function']
+      type: @type?.title() || '?'
+      name: @name
+      arguments: @arguments.map((x) -> x.title()).join(', ')

@@ -3,9 +3,10 @@ class @TypeNode
   constructor: (@kind, @name, @parameters) ->
 
   title: ->
-    type = switch @kind
-      when 'void' then 'void'
-      when 'monotype' then @name
-      when 'parametric' then "#{@name}<#{@parameters.map((x) -> x.title()).join(', ')}>"
-
-    "<i class='type'>#{type}</i>"
+    switch @kind
+      when 'void' then JST['nodes/type_constant'](type: 'void')
+      when 'monotype' then JST['nodes/type_constant'](type: @name)
+      when 'parametric'
+        JST['nodes/type_parametric']
+          type: @name
+          parameters: @parameters.map((x) -> x.title()).join(', ')

@@ -20,6 +20,14 @@ class @InstructionNode
         "%#{x[0]} => #{x[1].title()}"
 
     if @type.kind == 'void'
-      "<b>#{@opcode}</b> #{@parameters} #{operands.join(', ')}"
+      JST['nodes/instruction_void']
+        opcode: @opcode
+        parameters: @parameters
+        operands: operands.join(', ')
     else
-      "#{@type.title()} %#{@name} = <b>#{@opcode}</b> #{@parameters} #{operands.join(', ')}"
+      JST['nodes/instruction_typed']
+        type: @type.title()
+        name: @name
+        opcode: @opcode
+        parameters: @parameters
+        operands: operands.join(', ')
