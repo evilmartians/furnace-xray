@@ -77,10 +77,10 @@ class @Drawer
       "white-space": "nowrap"
 
     texts.html((d) -> d.data).each (d) ->
-      if @clientWidth > 500
+      if @clientWidth > 900
         d3.select(@).style
           "white-space": "normal"
-          "width": '500px'
+          "width": '900px'
 
     texts
       .each (d) ->
