@@ -27,6 +27,8 @@ class Application
     @sliderApply = $('#timeline button.ok')
     @sliderNext  = $('#timeline button.next')
     @sliderPrev  = $('#timeline button.prev')
+    @sliderFNext = $('#timeline button.fnext')
+    @sliderFPrev = $('#timeline button.fprev')
     @transforms  = $('#transforms')
 
 
@@ -112,3 +114,11 @@ class Application
 
     @sliderPrev.click => @draw @currentStep-1
     @sliderNext.click => @draw @currentStep+1
+
+    @sliderFNext.click => 
+      step = @input.transforms.find (x) => x.id > @currentStep
+      @draw step.id if step
+
+    @sliderFPrev.click => 
+      step = @input.transforms.findAll((x) => x.id < @currentStep).last()
+      @draw step.id if step
