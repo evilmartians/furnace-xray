@@ -93,7 +93,7 @@ class Application
     @data.each (f, i) =>
       @selector.append "<option value='#{i}'>#{f.source.name}</option>"
 
-    @selector.chosen().change =>
+    @selector.chosen(search_contains: true).change =>
       @currentFunction = @selector.val().toNumber()
       @draw()
 
