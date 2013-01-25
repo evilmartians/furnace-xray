@@ -13,14 +13,11 @@ class @InstructionNode
     @blocks = []
 
   title: ->
-    if @opcode == 'phi'
-      operands = []
-
-      for x in [0..@operands.length-1] by 2
-        do (x) =>
-          operands.add("#{@operands[x].title()} => #{@operands[x+1].title()}") 
-    else
-      operands = @operands.map (x) -> x.title()
+    operands = @operands.map (x) ->
+      if x instanceof OperandNode
+        x.title()
+      else
+        "#{x[0]} => #{x[1].title()}"
 
     if @type.kind == 'void'
       "<b>#{@opcode}</b> #{@parameters} #{operands.join(', ')}"

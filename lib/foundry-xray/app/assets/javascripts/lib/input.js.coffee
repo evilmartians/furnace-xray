@@ -94,8 +94,13 @@ class @Input
     id = @instructionsMap.add event.name, (id) =>
       @instructions[id] = new InstructionNode
 
-    operands = event.operands.map (x) =>
-      new OperandNode x.kind, @type(x.type), x.name, x.value
+    if Object.isArray(event.operands)
+      operands = event.operands.map (x) =>
+        new OperandNode x.kind, @type(x.type), x.name, x.value
+    else
+      operands = []
+      Object.each event.operands, (key, x) =>
+        operands.push [key, new OperandNode(x.kind, @type(x.type), x.name, x.value)]
 
     @instructions[id].update event.opcode, event.name, event.parameters, operands, @type(event.type)
 
