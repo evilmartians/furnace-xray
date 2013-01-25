@@ -38,7 +38,7 @@ class @Input
           
 
   rebuild: (step) ->
-    @function = new FunctionNode(@source.name)
+    @function = new FunctionNode(@source.name, @source.present)
 
     step  = @events.length-1 unless step?
     @stop = [step, @events.length-1].min()

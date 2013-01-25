@@ -90,11 +90,13 @@ class Application
     resize() && $(window).bind('resize', resize)
 
   buildSelector: ->
-    Object.extended('Present': true, 'Removed': false).each (label, condition) =>
-      group = $("<optgroup label='#{label}'>")
-      @data.findAll((x) -> x.source.present == condition).each (f, i) =>
-        group.append "<option value='#{i}'>#{f.source.name}</option>"
-      @selector.append group
+    groups = ['Present', 'Removed'].map (x) -> $("<optgroup label='#{x}'></optgroup>")
+
+    @data.each (f, i) =>
+      group = if f.source.present then groups[0] else groups[1]
+      group.append "<option value='#{i}'>#{f.source.name}</option>"
+
+    groups.each (x) => @selector.append x
 
     @selector.chosen(search_contains: true).change =>
       @currentFunction = @selector.val().toNumber()
