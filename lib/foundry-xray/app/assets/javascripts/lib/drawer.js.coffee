@@ -15,7 +15,7 @@ class @Drawer
           s = d3.event.scale
           @group.attr("transform", "translate(" + t + ") scale(" + s + ")");
 
-      @svg.call zoom
+      @svg.call(zoom).on("dblclick.zoom", null)
 
     @group
 
