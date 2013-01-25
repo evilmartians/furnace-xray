@@ -4,6 +4,7 @@ class @OperandNode
 
   title: ->
     switch @kind
+      when 'argument'    then JST['nodes/operand_argument'] name: @name
       when 'instruction' then JST['nodes/operand_instruction'] name: @name
       when 'basic_block' then JST['nodes/operand_basic_block'] name: @name
       when 'constant' 
