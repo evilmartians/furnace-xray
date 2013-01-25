@@ -39,8 +39,6 @@ class Application
     @draw()
 
   draw: (step) ->
-    @currentStep = step
-
     try
       @timeline.show()
 
@@ -50,8 +48,10 @@ class Application
       Drawer.clear()
 
       @input = input
-      @input.rebuild(@currentStep)
+      @input.rebuild(step)
       @drawer = new Drawer(new Graph(@input))
+
+      @currentStep = @input.stop
 
       @renewSlider()
       @title.removeClass('error').html @input.function.title()
