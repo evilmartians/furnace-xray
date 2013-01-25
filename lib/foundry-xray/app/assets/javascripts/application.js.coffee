@@ -6,6 +6,7 @@
 #= require vendor/stacktrace-0.4
 #= require vendor/chosen.jquery
 #= require vendor/mustache
+#= require vendor/hotkeys.jquery
 #= require_tree ./lib
 #= require_self
 
@@ -127,3 +128,8 @@ class Application
     @sliderFPrev.click => 
       step = @input.transforms.findAll((x) => x.id < @currentStep).last()
       @draw step.id if step
+
+    $(document).bind 'keydown.h', => @sliderFPrev.click()
+    $(document).bind 'keydown.j', => @sliderPrev.click()
+    $(document).bind 'keydown.k', => @sliderNext.click()
+    $(document).bind 'keydown.l', => @sliderFNext.click()
