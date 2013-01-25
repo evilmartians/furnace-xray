@@ -5,7 +5,7 @@ class @BlockNode
   title: ->
     JST['nodes/block']
       name: @name
-      instructions: @instructions.map((x) -> x.title()).join("<br/>")
+      instructions: @instructions.map((x) -> x.title()).join("")
 
   setName: (name) ->
     @name = name
