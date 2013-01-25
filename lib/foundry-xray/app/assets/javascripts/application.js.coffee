@@ -100,13 +100,11 @@ class Application
     @slider.slider
       min: 0
       orientation: 'vertical'
+      slide: (event, ui) => @sliderInput.val ui.value
       change: (event) =>
         @sliderInput.val @slider.slider('value')
         # Redraw if triggered by manual slider scroll
         @draw @sliderInput.val().toNumber() if event.originalEvent
-
-    @slider.unbind('keydown')
-    @slider.unbind('keyup')
 
     @slider.on 'mouseenter', '.label', -> $(this).find('span').show()
     @slider.on 'mouseout', '.label', -> $(this).find('span').hide()
