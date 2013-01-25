@@ -90,7 +90,7 @@ class Application
     resize() && $(window).bind('resize', resize)
 
   buildSelector: ->
-    Object.extended('Active': true, 'Inactive': false).each (label, condition) =>
+    Object.extended('Present': true, 'Removed': false).each (label, condition) =>
       group = $("<optgroup label='#{label}'>")
       @data.findAll((x) -> x.source.present == condition).each (f, i) =>
         group.append "<option value='#{i}'>#{f.source.name}</option>"
