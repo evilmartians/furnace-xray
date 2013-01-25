@@ -1,6 +1,5 @@
 class @FunctionNode
   constructor: (@name, @present) ->
-    console.log [@name, @present]
     @arguments = []
 
   setArguments: (@arguments) ->

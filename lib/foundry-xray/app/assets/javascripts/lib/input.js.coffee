@@ -42,6 +42,7 @@ class @Input
 
     step  = @events.length-1 unless step?
     @stop = [step, @events.length-1].min()
+    @stop = 0 if @stop < 0
 
     # Clear storages
     @types           = Object.extended()

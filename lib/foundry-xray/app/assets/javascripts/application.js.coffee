@@ -106,6 +106,8 @@ class Application
   buildSlider: ->
     $('button').button()
 
+    @sliderInput.focus -> $(@).blur()
+
     @slider.slider
       min: 0
       orientation: 'vertical'
@@ -118,18 +120,23 @@ class Application
     @slider.on 'mouseenter', '.label', -> $(this).find('span').show()
     @slider.on 'mouseout', '.label', -> $(this).find('span').hide()
 
-    @sliderPrev.click => @draw @currentStep-1
-    @sliderNext.click => @draw @currentStep+1
+    next = => @draw @currentStep-1
+    prev = => @draw @currentStep+1
 
-    @sliderFNext.click => 
+    fnext = =>
       step = @input.transforms.find (x) => x.id > @currentStep
       @draw step.id if step
 
-    @sliderFPrev.click => 
+    fprev = =>
       step = @input.transforms.findAll((x) => x.id < @currentStep).last()
       @draw step.id if step
 
-    $(document).bind 'keydown.h', => @sliderFPrev.click()
-    $(document).bind 'keydown.j', => @sliderPrev.click()
-    $(document).bind 'keydown.k', => @sliderNext.click()
-    $(document).bind 'keydown.l', => @sliderFNext.click()
+    @sliderPrev.click next
+    @sliderNext.click prev
+    @sliderFNext.click fnext
+    @sliderFPrev.click fprev
+
+    $(document).add('.chzn-container input').bind 'keydown.h', fprev
+    $(document).add('.chzn-container input').bind 'keydown.j', prev
+    $(document).add('.chzn-container input').bind 'keydown.k', next
+    $(document).add('.chzn-container input').bind 'keydown.l', fnext
