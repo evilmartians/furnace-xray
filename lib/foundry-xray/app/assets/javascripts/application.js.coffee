@@ -172,7 +172,11 @@ class Application
     @sliderFNext.click fnext
     @sliderFPrev.click fprev
 
-    $(document).add('.chzn-container input').bind 'keydown.h', fprev
-    $(document).add('.chzn-container input').bind 'keydown.j', prev
-    $(document).add('.chzn-container input').bind 'keydown.k', next
-    $(document).add('.chzn-container input').bind 'keydown.l', fnext
+    $(document).bind 'keydown.h', fprev
+    $(document).bind 'keydown.j', prev
+    $(document).bind 'keydown.k', next
+    $(document).bind 'keydown.l', fnext
+    $(document).bind 'keydown.x', => @zoomButton.click()
+    $(document).bind 'keydown.backspace', (e) ->
+      e.preventDefault()
+      history.back()
