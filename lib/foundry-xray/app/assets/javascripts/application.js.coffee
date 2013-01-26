@@ -134,13 +134,16 @@ class Application
     elements = $('.naming')
     drawer   = @drawer
 
-    elements.click ->
-      active = $(@).hasClass('active')
-      needle = @innerHTML
+    elements.filter('.link').click ->
+      element = $(@)
+      active  = element.hasClass('active')
+      needle  = element.attr("data-naming") || @innerHTML
       elements.removeClass('active')
 
       unless active
-        elements.filter(-> @innerHTML == needle).addClass('active')
+        elements.filter(->
+          ($(@).attr("data-naming") || @innerHTML) == needle
+        ).addClass('active')
 
       drawer.repaint()
 
