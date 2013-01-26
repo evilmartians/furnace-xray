@@ -92,6 +92,9 @@ class Application
     @currentStep     = [0, @currentStep].max()
     window.location.hash = "#{@currentFunction}:#{@currentStep || 0}"
 
+  jumpToBlock: (name) ->
+    @drawer.zoomNode @svg.width(), @svg.height(), name
+
   renewSlider: (max, value) ->
     @slider.slider
       max: @input.events.length-1

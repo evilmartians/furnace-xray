@@ -43,6 +43,13 @@ class @Drawer
   unfit: ->
     @constructor.zoomTo @zoomValue...
 
+  zoomNode: (width, height, name) ->
+    n = @container.select("#node-#{name}")
+    x = -n.attr("x").toNumber()+10+width/2-n.attr("width")/2
+    y = -n.attr("y").toNumber()+10+height/2-n.attr("height")/2
+
+    @constructor.zoomTo [x, y], 1
+
   setupEntities: ->
     @container = @constructor.group.append("g")
 
@@ -133,8 +140,16 @@ class @Drawer
       .run()
 
     # Positioning nodes
-    @nodes.attr "transform", (d) ->
-      "translate(#{d.dagre.x - d.width/2},#{d.dagre.y - d.height/2})"
+    @nodes.attr "transform", (d, i) =>
+      x = d.dagre.x - d.width/2
+      y = d.dagre.y - d.height/2
+
+      @nodes[0][i].setAttribute 'x', x
+      @nodes[0][i].setAttribute 'y', y
+      @nodes[0][i].setAttribute 'width', d.bbox.width
+      @nodes[0][i].setAttribute 'height', d.bbox.height
+
+      "translate(#{x},#{y})"
 
     # Ensure that we have at least two points between source and target
     @edges.each (d) ->

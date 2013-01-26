@@ -1,11 +1,10 @@
 svg
+  cursor: move
   font-family: monospace
 
   g.node
     a
-      text-decoration: none
-      color: inherit
-      border-bottom: 1px dashed rgb(184, 52, 0)
+      color: rgb(184, 52, 0)
 
     rect
       stroke-width: 2px
@@ -13,9 +12,8 @@ svg
       fill: #fff
     text
       font: 300 10px
-    &:hover
-      cursor: pointer
-      opacity: 0.6
+    &:hover rect
+      stroke: #AAA
 
   g.edge
     rect
@@ -28,4 +26,4 @@ svg
       stroke-width: 2px
       &:hover
         cursor: pointer
-        opacity: 0.4
+        stroke: #AAA
