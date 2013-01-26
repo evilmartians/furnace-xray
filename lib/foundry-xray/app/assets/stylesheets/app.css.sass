@@ -53,16 +53,6 @@ html
             font-weight: bold
             color: red
 
-          .transform
-
-            &.active
-              background: white
-              border: 1px solid gray
-              border-radius: 4px
-              padding: 2px
-              font-size: 11px
-              margin-right: 5px
-
       #logo
         h1
           font-size: 20px
@@ -90,6 +80,18 @@ html
 
       td#canvas
         padding-right: 12px
+
+        #transform
+          display: none
+
+          &.active
+            display: block
+            position: absolute
+            background: white
+            border: 2px solid rgb(217, 214, 196)
+            border-radius: 0px 0px 5px 0px
+            padding: 5px
+            font-size: 12px
 
         svg
           width: 100%

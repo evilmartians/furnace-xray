@@ -20,8 +20,8 @@ class Application
     Drawer.attach('svg')
 
     @toolbar   = $('#toolbar')
-    @title     = $('#title .name')
-    @transform = $('#title .transform')
+    @title     = $('#title')
+    @transform = $('#transform')
     @selector  = $('#functions select')
 
     @zoomButton = $('#zoom button')

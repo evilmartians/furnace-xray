@@ -4,6 +4,8 @@
 #
 class @Drawer
 
+  @canvasPadding = 20
+
   @attach: (selector) ->
     @svg   = d3.select(selector)
     @group = @svg.append("g").attr("class", "container")
@@ -23,7 +25,7 @@ class @Drawer
     @group?.select("g").remove()
 
   @reset: ->
-    @zoomTo [10, 10]
+    @zoomTo [@canvasPadding, @canvasPadding]
 
   constructor: (@graph, padding=10) ->
     @padding = padding
@@ -38,17 +40,17 @@ class @Drawer
   fit: (width, height) ->
     @zoomValue = [@constructor.zoom.translate(), @constructor.zoom.scale()]
 
-    width  = (width-20) / @width()
-    height = (height-20) / @height()
+    width  = (width-@constructor.canvasPadding*2) / @width()
+    height = (height-@constructor.canvasPadding*2) / @height()
     ratio  = [width, height].min()
 
-    @constructor.zoomTo([10,10], ratio)
+    @constructor.zoomTo([@constructor.canvasPadding,@constructor.canvasPadding], ratio)
 
   unfit: ->
     @constructor.zoomTo @zoomValue...
 
   zoomNode: (width, height, name) ->
-    padding = 10
+    padding = @constructor.canvasPadding
     width   = width-padding*2
     height  = height-padding*2
 
