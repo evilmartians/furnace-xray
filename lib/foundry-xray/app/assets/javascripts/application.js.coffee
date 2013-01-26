@@ -190,7 +190,10 @@ class Application
 
     fnext = =>
       step = @input.transforms.find (x) => x.id > @currentStep
-      @jumpTo @currentFunction, step.id if step
+      if step
+        @jumpTo @currentFunction, step.id 
+      else
+        @jumpTo @currentFunction, @currentStep+1
 
     fprev = =>
       step = @input.transforms.findAll((x) => x.id < @currentStep).last()
