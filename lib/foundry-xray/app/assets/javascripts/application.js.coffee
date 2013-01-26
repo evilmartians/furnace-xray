@@ -32,17 +32,23 @@ class Application
     @sliderFPrev = $('#timeline button.fprev')
     @transforms  = $('#transforms')
 
-    @dehasherize()
-    @currentFunction ||= 0
-    @currentStep     ||= undefined
-
-    @setupContainer()
     @buildSelector()
     @buildSlider()
 
-    @draw(@currentStep)
+    redraw = =>
+      @dehasherize()
+      @currentFunction ||= 0
+      @draw()
 
-  draw: (step) ->
+    redraw(); $(window).bind 'hashchange', redraw
+
+    resize = => 
+      @container.find('.stretch').height($(window).height() - @toolbar.outerHeight() - 4)
+      @slider.height($(window).height() - @toolbar.outerHeight() - 250)
+
+    resize(); $(window).bind('resize', resize)
+
+  draw: ->
     try
       @timeline.show()
 
@@ -52,18 +58,32 @@ class Application
       Drawer.clear()
 
       @input = input
-      @input.rebuild(step)
+      @input.rebuild(@currentStep)
       @drawer = new Drawer(new Graph(@input))
 
-      @currentStep = @input.stop
-      @hasherize()
-
+      @renewSelector()
       @renewSlider()
+
       @title.removeClass('error').html @input.function.title()
     catch error
       console.log error
       @timeline.hide()
       @title.addClass('error').text 'Unable to build graph: problem dumped to console'
+
+  dehasherize: ->
+    hash = window.location.hash.from(1)
+    hash = "0:#{@data[0].events.length-1}" if hash.length == 0
+    [@currentFunction, @currentStep] = hash.split(":").map (x) -> x.toNumber()
+
+  jumpTo: (func, step) ->
+    if Object.isString(func)
+      @selector.find('option').each (x) ->
+        func = $(@).attr('value').toNumber() if $(@).text() == func
+
+    @currentFunction = func; step ||= @data[func].events.length-1
+    @currentStep     = [step, @data[func].events.length-1].min()
+    @currentStep     = [0, @currentStep].max()
+    window.location.hash = "#{@currentFunction}:#{@currentStep || 0}"
 
   renewSlider: (max, value) ->
     @slider.slider
@@ -82,20 +102,10 @@ class Application
         .attr("style", "top: #{top}%; height: #{height}%;")
         .mousedown (e) =>
           e.stopPropagation()
-          @draw entry.id
+          @jumpTo @currentFunction, entry.id
 
-  setupContainer: ->
-    resize = => 
-      @container.find('.stretch').height($(window).height() - @toolbar.outerHeight() - 4)
-      @slider.height($(window).height() - @toolbar.outerHeight() - 250)
-
-    resize() && $(window).bind('resize', resize)
-
-  hasherize: ->
-    window.location.hash = "#{@currentFunction}:#{@currentStep}"
-
-  dehasherize: ->
-    [@currentFunction, @currentStep] = window.location.hash.from(1).split(":")
+  renewSelector: ->
+    @selector.val(@currentFunction).trigger('liszt:updated')
 
   buildSelector: ->
     groups = ['Present', 'Removed'].map (x) -> $("<optgroup label='#{x}'></optgroup>")
@@ -106,9 +116,8 @@ class Application
 
     groups.each (x) => @selector.append x
 
-    @selector.chosen(search_contains: true).change =>
-      @currentFunction = @selector.val().toNumber()
-      @draw()
+    @selector.chosen(search_contains: true).change => @jumpTo @selector.val().toNumber()
+    @selector.val(@currentFunction).trigger('liszt:updated')
 
   buildSlider: ->
     $('button').button()
@@ -122,21 +131,21 @@ class Application
       change: (event) =>
         @sliderInput.val @slider.slider('value')
         # Redraw if triggered by manual slider scroll
-        @draw @sliderInput.val().toNumber() if event.originalEvent
+        @jumpTo @currentFunction, @sliderInput.val().toNumber() if event.originalEvent
 
     @slider.on 'mouseenter', '.label', -> $(this).find('span').show()
     @slider.on 'mouseout', '.label', -> $(this).find('span').hide()
 
-    next = => @draw @currentStep+1
-    prev = => @draw @currentStep-1
+    next = => @jumpTo @currentFunction, @currentStep+1
+    prev = => @jumpTo @currentFunction, @currentStep-1
 
     fnext = =>
       step = @input.transforms.find (x) => x.id > @currentStep
-      @draw step.id if step
+      @jumpTo @currentFunction, step.id if step
 
     fprev = =>
       step = @input.transforms.findAll((x) => x.id < @currentStep).last()
-      @draw step.id if step
+      @jumpTo @currentFunction, step.id if step
 
     @sliderPrev.click prev
     @sliderNext.click next
