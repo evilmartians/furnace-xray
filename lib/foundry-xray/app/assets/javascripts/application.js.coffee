@@ -127,8 +127,8 @@ class Application
     @slider.on 'mouseenter', '.label', -> $(this).find('span').show()
     @slider.on 'mouseout', '.label', -> $(this).find('span').hide()
 
-    next = => @draw @currentStep-1
-    prev = => @draw @currentStep+1
+    next = => @draw @currentStep+1
+    prev = => @draw @currentStep-1
 
     fnext = =>
       step = @input.transforms.find (x) => x.id > @currentStep
@@ -138,8 +138,8 @@ class Application
       step = @input.transforms.findAll((x) => x.id < @currentStep).last()
       @draw step.id if step
 
-    @sliderPrev.click next
-    @sliderNext.click prev
+    @sliderPrev.click prev
+    @sliderNext.click next
     @sliderFNext.click fnext
     @sliderFPrev.click fprev
 
