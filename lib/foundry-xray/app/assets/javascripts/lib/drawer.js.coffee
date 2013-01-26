@@ -52,7 +52,7 @@ class @Drawer
       .enter()
       .append("g")
       .attr("class", "node")
-      #.attr("id", (d) -> "node-" + d.label)
+      .attr("id", (d) -> "node-" + d.label)
 
     @edges = @container.selectAll("g .edge")
       .data(@graph.edges)
@@ -116,14 +116,12 @@ class @Drawer
       d.height = bbox.height + 2 * padding
 
     rects
-      .attr("x", (d) -> -(d.bbox.width / 2 + padding))
-      .attr("y", (d) -> -(d.bbox.height / 2 + padding))
       .attr("width", (d) -> d.width)
       .attr("height", (d) -> d.height)
 
     labels
-      .attr("x", (d) -> -d.bbox.width / 2)
-      .attr("y", (d) -> -d.bbox.height / 2)
+      .attr("x", (d) -> padding)
+      .attr("y", (d) -> padding)
 
   width: -> @container[0][0].getBBox().width
   height: -> @container[0][0].getBBox().height
@@ -135,7 +133,8 @@ class @Drawer
       .run()
 
     # Positioning nodes
-    @nodes.attr "transform", (d) -> "translate(" + d.dagre.x + "," + d.dagre.y + ")"
+    @nodes.attr "transform", (d) ->
+      "translate(#{d.dagre.x - d.width/2},#{d.dagre.y - d.height/2})"
 
     # Ensure that we have at least two points between source and target
     @edges.each (d) ->
