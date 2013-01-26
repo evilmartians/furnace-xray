@@ -31,6 +31,10 @@ class @Drawer
     @setupEntities()
     @draw()
 
+  repaint: ->
+    @container.attr("transform", "translate(0,1)")
+    @container.attr("transform", "translate(0,0)")
+
   fit: (width, height) ->
     @zoomValue = [@constructor.zoom.translate(), @constructor.zoom.scale()]
 

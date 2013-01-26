@@ -36,6 +36,7 @@ class Application
     @sliderPrev  = $('#timeline button.prev')
     @sliderFNext = $('#timeline button.fnext')
     @sliderFPrev = $('#timeline button.fprev')
+
     @transforms  = $('#transforms')
 
     @buildZoomer()
@@ -73,6 +74,7 @@ class Application
       @renewZoomer()
       @renewSelector()
       @renewSlider()
+      @renewNaming()
 
       @title.html @input.function.title()
     catch error
@@ -128,15 +130,27 @@ class Application
   renewZoomer: ->
     @zoomButton.removeClass 'active'
 
+  renewNaming: ->
+    elements = $('.naming')
+    drawer   = @drawer
+
+    elements.click ->
+      active = $(@).hasClass('active')
+      needle = @innerHTML
+      elements.removeClass('active')
+
+      unless active
+        elements.filter(-> @innerHTML == needle).addClass('active')
+        drawer.repaint()
+
   buildZoomer: ->
     @zoomButton.click =>
       if @zoomButton.hasClass('active')
-        @zoomButton.removeClass 'active'
+        @zoomButton.removeClass('active')
         @drawer.unfit()
       else
-        @zoomButton.addClass 'active'
+        @zoomButton.addClass('active')
         @drawer.fit(@svg.width(), @svg.height())
-
 
   buildSelector: ->
     groups = ['Present', 'Removed'].map (x) -> $("<optgroup label='#{x}'></optgroup>")
