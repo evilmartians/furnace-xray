@@ -141,7 +141,8 @@ class Application
 
       unless active
         elements.filter(-> @innerHTML == needle).addClass('active')
-        drawer.repaint()
+
+      drawer.repaint()
 
   buildZoomer: ->
     @zoomButton.click =>
