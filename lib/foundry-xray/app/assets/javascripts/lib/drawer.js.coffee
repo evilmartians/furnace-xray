@@ -4,27 +4,26 @@
 #
 class @Drawer
 
-  @container: ->
-    @svg ||= d3.select("svg")
+  @attach: (selector) ->
+    @svg   = d3.select(selector)
+    @group = @svg.append("g").attr("class", "container")
+    @zoom  = d3.behavior.zoom()
 
-    unless @group?
-      @group = @svg.append("g").attr("class", "container")
+    @zoom.on "zoom", =>
+      @group.attr("transform", "translate(#{d3.event.translate}) scale(#{d3.event.scale})")
 
-      zoom = d3.behavior.zoom().on "zoom", =>
-          t = d3.event.translate
-          s = d3.event.scale
-          @group.attr("transform", "translate(" + t + ") scale(" + s + ")");
+    @svg.call(@zoom).on("dblclick.zoom", null)
 
-      @svg.call(zoom).on("dblclick.zoom", null)
-
-    @group
+  @zoomTo: (t, s) ->
+    @zoom.translate(t)
+    @zoom.scale(s)
+    @group.attr("transform", "translate(#{t}) scale(#{s})")
 
   @clear: ->
     @group?.select("g").remove()
 
   @reset: ->
-    @group?.remove()
-    delete @group
+    @zoomTo [10, 10], 1
 
   constructor: (@graph, padding=10) ->
     @padding = padding
@@ -32,8 +31,20 @@ class @Drawer
     @setupEntities()
     @draw()
 
+  fit: (width, height) ->
+    @zoomValue = [@constructor.zoom.translate(), @constructor.zoom.scale()]
+
+    width  = (width-10) / @width()
+    height = (height-10) / @height()
+    ratio  = [width, height].min()
+
+    @constructor.zoomTo([10,10], ratio)
+
+  unfit: ->
+    @constructor.zoomTo @zoomValue...
+
   setupEntities: ->
-    @container = @constructor.container().append("g").attr("transform", "translate(20, 20)")
+    @container = @constructor.group.append("g")
 
     # `nodes` is center positioned for easy layout later
     @nodes = @container.selectAll("g .node")
@@ -113,6 +124,9 @@ class @Drawer
     labels
       .attr("x", (d) -> -d.bbox.width / 2)
       .attr("y", (d) -> -d.bbox.height / 2)
+
+  width: -> @container[0][0].getBBox().width
+  height: -> @container[0][0].getBBox().height
 
   draw: ->
     dagre.layout().nodeSep(50).edgeSep(50).rankSep(50)

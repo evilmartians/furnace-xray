@@ -17,6 +17,8 @@ class Application
   constructor: ->
     @data = window.data
 
+    Drawer.attach('svg')
+
     @toolbar  = $('#toolbar')
     @title    = $('#title')
     @selector = $('#functions select')
@@ -80,7 +82,7 @@ class Application
       @selector.find('option').each (x) ->
         func = $(@).attr('value').toNumber() if $(@).text() == func
 
-    @currentFunction = func; step ||= @data[func].events.length-1
+    @currentFunction = func; step = @data[func].events.length-1 if step == undefined
     @currentStep     = [step, @data[func].events.length-1].min()
     @currentStep     = [0, @currentStep].max()
     window.location.hash = "#{@currentFunction}:#{@currentStep || 0}"
