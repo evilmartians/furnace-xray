@@ -34,8 +34,8 @@ class @Drawer
   fit: (width, height) ->
     @zoomValue = [@constructor.zoom.translate(), @constructor.zoom.scale()]
 
-    width  = (width-10) / @width()
-    height = (height-10) / @height()
+    width  = (width-20) / @width()
+    height = (height-20) / @height()
     ratio  = [width, height].min()
 
     @constructor.zoomTo([10,10], ratio)

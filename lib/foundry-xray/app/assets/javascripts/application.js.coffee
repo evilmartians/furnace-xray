@@ -23,7 +23,10 @@ class Application
     @title    = $('#title')
     @selector = $('#functions select')
 
+    @zoomButton = $('#zoom button')
+
     @container   = $('#container')
+    @svg         = $('svg')
     @timeline    = $('#timeline')
     @slider      = $('#timeline .slider')
     @sliderInput = $('#timeline input')
@@ -34,6 +37,7 @@ class Application
     @sliderFPrev = $('#timeline button.fprev')
     @transforms  = $('#transforms')
 
+    @buildZoomer()
     @buildSelector()
     @buildSlider()
 
@@ -63,6 +67,7 @@ class Application
       @input.rebuild(@currentStep)
       @drawer = new Drawer(new Graph(@input))
 
+      @renewZoomer()
       @renewSelector()
       @renewSlider()
 
@@ -108,6 +113,19 @@ class Application
 
   renewSelector: ->
     @selector.val(@currentFunction).trigger('liszt:updated')
+
+  renewZoomer: ->
+    @zoomButton.removeClass 'active'
+
+  buildZoomer: ->
+    @zoomButton.click =>
+      if @zoomButton.hasClass('active')
+        @zoomButton.removeClass 'active'
+        @drawer.unfit()
+      else
+        @zoomButton.addClass 'active'
+        @drawer.fit(@svg.width(), @svg.height())
+
 
   buildSelector: ->
     groups = ['Present', 'Removed'].map (x) -> $("<optgroup label='#{x}'></optgroup>")

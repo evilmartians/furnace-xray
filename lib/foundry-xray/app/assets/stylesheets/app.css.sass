@@ -10,6 +10,11 @@
 
 @import 'elements'
 
+@font-face
+  font-family: 'IconicStroke'
+  src: url('/fonts/iconic_stroke.eot')
+  src: url('/fonts/iconic_stroke.woff') format('woff'), url('/fonts/iconic_stroke.ttf') format('truetype'), url('/fonts/iconic_stroke.svg#webfontIyfZbseF') format('svg')
+
 html
 
   body
@@ -39,7 +44,20 @@ html
           select
             width: 100%
 
+        #zoom
+          button
+            font-family: IconicStroke
+            height: 25px
+
+            span:before
+              content: '\e051'
+
+            &.active
+              span:before
+                content: '\e04e'
+
         #title
+          padding-left: 0px
           height: 20px
           border-radius: 0px 5px 5px 0px
           padding-top: 15px
@@ -93,6 +111,7 @@ html
           width: 50px
 
           input, button
+            font-family: IconicStroke
             box-sizing: border-box
             display: block
             width: 90%
