@@ -32,15 +32,15 @@ class Application
     @sliderFPrev = $('#timeline button.fprev')
     @transforms  = $('#transforms')
 
-
-    @currentFunction = 0
-    @currentStep     = undefined
+    @dehasherize()
+    @currentFunction ||= 0
+    @currentStep     ||= undefined
 
     @setupContainer()
     @buildSelector()
     @buildSlider()
 
-    @draw()
+    @draw(@currentStep)
 
   draw: (step) ->
     try
@@ -56,6 +56,7 @@ class Application
       @drawer = new Drawer(new Graph(@input))
 
       @currentStep = @input.stop
+      @hasherize()
 
       @renewSlider()
       @title.removeClass('error').html @input.function.title()
@@ -89,6 +90,12 @@ class Application
       @slider.height($(window).height() - @toolbar.outerHeight() - 250)
 
     resize() && $(window).bind('resize', resize)
+
+  hasherize: ->
+    window.location.hash = "#{@currentFunction}:#{@currentStep}"
+
+  dehasherize: ->
+    [@currentFunction, @currentStep] = window.location.hash.from(1).split(":")
 
   buildSelector: ->
     groups = ['Present', 'Removed'].map (x) -> $("<optgroup label='#{x}'></optgroup>")
