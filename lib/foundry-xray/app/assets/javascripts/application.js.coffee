@@ -19,9 +19,10 @@ class Application
 
     Drawer.attach('svg')
 
-    @toolbar  = $('#toolbar')
-    @title    = $('#title')
-    @selector = $('#functions select')
+    @toolbar   = $('#toolbar')
+    @title     = $('#title .name')
+    @transform = $('#title .transform')
+    @selector  = $('#functions select')
 
     @zoomButton = $('#zoom button')
 
@@ -50,13 +51,15 @@ class Application
 
     resize = => 
       @container.find('.stretch').height($(window).height() - @toolbar.outerHeight() - 4)
-      @slider.height($(window).height() - @toolbar.outerHeight() - 250)
+      @slider.height($(window).height() - @toolbar.outerHeight() - 280)
 
     resize(); $(window).bind('resize', resize)
 
   draw: ->
     try
       @timeline.show()
+      @title.removeClass('error')
+      @transform.removeClass('active').html('')
 
       input = @data[@currentFunction]
 
@@ -71,7 +74,7 @@ class Application
       @renewSelector()
       @renewSlider()
 
-      @title.removeClass('error').html @input.function.title()
+      @title.html @input.function.title()
     catch error
       console.log error
       @timeline.hide()
@@ -106,7 +109,12 @@ class Application
       height = entry.length/(@input.events.length-1)*100
       top    = 100-entry.id/(@input.events.length-1)*100-height
       label  = "#{entry.label}&nbsp;(#{entry.id}+#{entry.length})"
-      klass  = if @currentStep >= entry.id && @currentStep < entry.id+entry.length then "current" else ""
+
+      if @currentStep >= entry.id && @currentStep < entry.id+entry.length
+        klass = "current"
+        @transform.addClass('active').html(entry.label)
+      else
+        klass = ""
 
       @transforms.append $("<div class='label #{klass}'><span>#{label}</span></div>")
         .attr("style", "top: #{top}%; height: #{height}%;")

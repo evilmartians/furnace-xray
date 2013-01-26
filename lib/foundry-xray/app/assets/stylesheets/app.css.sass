@@ -44,20 +44,7 @@ html
           select
             width: 100%
 
-        #zoom
-          button
-            font-family: IconicStroke
-            height: 25px
-
-            span:before
-              content: '\e050'
-
-            &.active
-              span:before
-                content: '\e04e'
-
         #title
-          padding-left: 0px
           height: 20px
           border-radius: 0px 5px 5px 0px
           padding-top: 15px
@@ -65,6 +52,16 @@ html
           &.error
             font-weight: bold
             color: red
+
+          .transform
+
+            &.active
+              background: white
+              border: 1px solid gray
+              border-radius: 4px
+              padding: 2px
+              font-size: 11px
+              margin-right: 5px
 
       #logo
         h1
@@ -109,6 +106,19 @@ html
           margin-left: 12px
           background-color: rgb(217, 214, 196)
           width: 50px
+
+          #zoom
+            button
+              font-size: 14px
+              font-family: IconicStroke
+              height: 25px
+
+              span:before
+                content: '\e050'
+
+              &.active
+                span:before
+                  content: '\e04e'
 
           input, button
             font-family: IconicStroke
@@ -162,6 +172,7 @@ html
                   padding: 4px
                   background: white
                   border: 1px solid gray
+                  border-box: 4px
                   margin-left: 44px
                   font-size: 12px
 
