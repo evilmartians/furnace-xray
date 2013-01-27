@@ -20,4 +20,4 @@ end
 
 Trollop::die "File not specified or does not exist" unless ARGV[0] && File.exist?(ARGV[0])
 
-Furnace::Xray::App.run! ARGV[0]
+Furnace::Xray::App.run! ARGV[0], :environment => :production
