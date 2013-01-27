@@ -10,10 +10,7 @@ class @BlockNode
   titleizeInstructions: (previousState) ->
     unless previousState
       result = ""
-
-      @instructions.each (x) -> 
-        result += JST['nodes/diff/unchanged_line'] line: x.title()
-
+      result += JST['nodes/diff/unchanged_line'] line: x.title() for x in @instructions 
       result
     else
       result    = ""
@@ -22,23 +19,37 @@ class @BlockNode
       changed   = Object.extended()
       unchanged = Object.extended()
 
-      previousState.each (ps, i) =>
-        if !@instructions.any((cs) -> ps.name == cs.name)
-          removed[i] = ps.title
-
-      @instructions.each (cs, i) =>
+      for cs, i in @instructions
         previous = previousState.find (ps) -> ps.name == cs.name
         currentTitle = cs.title()
 
         if previous && previous.title == currentTitle
           unchanged[i] = previous.title
+          previous.newPosition = i
         else if previous
           changed[i] = [previous.title, currentTitle]
+          previous.newPosition = i
         else
           added[i] = currentTitle
 
+      extendedLength = 0
+
+      for ps, i in previousState
+        if !ps.newPosition?
+          position = 0
+
+          while --i >= 0
+            if previousState[i].newPosition?
+              position = previousState[i].newPosition+1
+              break
+
+          removed[position] ||= []
+          removed[position].push ps.title
+
       [@instructions.length, previousState.length].max().times (i) ->
-        result += JST['nodes/diff/removed_line'](line: removed[i]) if removed[i]
+        if removed[i]
+          result += JST['nodes/diff/removed_line'](line: l) for l in removed[i]
+
         result += JST['nodes/diff/added_line'](line: added[i]) if added[i]
         result += JST['nodes/diff/changed_line'](before: changed[i][0], after:changed[i][1]) if changed[i]
         result += JST['nodes/diff/unchanged_line'](line: unchanged[i]) if unchanged[i]
