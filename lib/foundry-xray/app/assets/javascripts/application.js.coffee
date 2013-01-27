@@ -68,7 +68,7 @@ class Application
       Drawer.clear()
 
       @input = input
-      @input.rebuild(@currentStep)
+      @input.rewind(@currentStep)
       @drawer = new Drawer(new Graph(@input))
 
       @title.html @input.function.title()
@@ -103,7 +103,7 @@ class Application
   renewSlider: (max, value) ->
     @slider.slider
       max: @input.events.length-1
-      value: @input.stop
+      value: @input.cursor
 
     @slider.find('.label').remove()
 

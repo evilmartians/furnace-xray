@@ -35,16 +35,10 @@ class @Input
     @transforms = @transforms.filter (x, i) => 
       x.length = (@transforms[i+1]?.id || @events.length) - x.id
       x.id < @events.length-1
-          
 
-  rebuild: (step) ->
-    @function = new FunctionNode(@source.name, @source.present)
+    @reset()
 
-    step  = @events.length-1 unless step?
-    @stop = [step, @events.length-1].min()
-    @stop = 0 if @stop < 0
-
-    # Clear storages
+  reset: ->
     @types           = Object.extended()
     @blocks          = Object.extended()
     @instructions    = Object.extended()
@@ -52,15 +46,29 @@ class @Input
     @blocksMap       = new Map 'blocks'
     @instructionsMap = new Map 'instructions'
 
-    # Evaluating required steps
-    i=-1; while (i += 1) <= @events[@stop]
-      event = @source.events[i]
+    @function = new FunctionNode(@source.name, @source.present)
+    @run(@cursor = 0)
 
-      if event.event == 'type'
-        @types[event.id] = new TypeNode(event.kind, event.name, event.parameters)
-      else
-        @[event.event]?(event)
-        console.log "UNKNOWN EVENT: #{event.event}" unless @[event.event]?
+  rewind: (to) ->
+    @reset() if to < @cursor
+    @increment(to)
+
+  increment: (to) ->
+    to   = @events.length-1 unless to?
+    stop = [to, @events.length-1].min()
+    stop = 0 if stop < 0
+
+    i = @events[@cursor]; @run(i) while (i+=1) <= @events[stop]
+    @cursor = stop
+
+  run: (step) ->
+    event = @source.events[step]
+
+    if event.event == 'type'
+      @types[event.id] = new TypeNode(event.kind, event.name, event.parameters)
+    else
+      @[event.event]?(event)
+      console.log "UNKNOWN EVENT: #{event.event}" unless @[event.event]?
 
   type: (id) ->
     return undefined unless id?
