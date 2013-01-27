@@ -1,5 +1,5 @@
 module Foundry
   module Xray
-    VERSION = '0.1.0'
+    VERSION = '1.0.0.RC1'
   end
 end
