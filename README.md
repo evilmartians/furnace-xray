@@ -14,25 +14,27 @@ Assignment form in the [Furnace][] framework.
 First, you need to enable instrumentation for the functions you want to
 observe. Here is a sample snippet:
 
-    mod = SSA::Module.new
+``` ruby
+mod = SSA::Module.new
 
-    fun = SSA::Function.new('my-function')
+fun = SSA::Function.new('my-function')
 
-    # It is important to enable instrumentation before doing anything else
-    # with the function. Otherwise, the collected data will be invalid.
-    fun.instrumentaiton = SSA::EventStream.new
-    mod.add fun
+# It is important to enable instrumentation before doing anything else
+# with the function. Otherwise, the collected data will be invalid.
+fun.instrumentaiton = SSA::EventStream.new
+mod.add fun
 
-    # Optionally, notify the instrumentation engine that you have started
-    # a transformation.
-    fun.instrumentation.transform_start "Set return type"
+# Optionally, notify the instrumentation engine that you have started
+# a transformation.
+fun.instrumentation.transform_start "Set return type"
 
-    # Now, do whatever you want with the function.
-    fun.return_type = SSA.void_type
+# Now, do whatever you want with the function.
+fun.return_type = SSA.void_type
 
-    # After you have finished transforming functions, fetch the instrumentation
-    # data and dump it as JSON.
-    File.write("data.json", JSON.dump(mod.instrumentation))
+# After you have finished transforming functions, fetch the instrumentation
+# data and dump it as JSON.
+File.write("data.json", JSON.dump(mod.instrumentation))
+```
 
 To view collected data, just point furnace-xray to it:
 
@@ -43,7 +45,7 @@ To view collected data, just point furnace-xray to it:
     [2013-01-27 20:05:13] INFO  WEBrick::HTTPServer#start: pid=28695 port=4567
 
 Now, open your ~~browser~~ Chrome or Chromium and point it to
-`http://localhost:4567`.
+http://localhost:4567.
 
 ## Contributing
 
