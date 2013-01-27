@@ -71,12 +71,12 @@ class Application
       @input.rebuild(@currentStep)
       @drawer = new Drawer(new Graph(@input))
 
+      @title.html @input.function.title()
+
       @renewZoomer()
       @renewSelector()
       @renewSlider()
       @renewNaming()
-
-      @title.html @input.function.title()
     catch error
       console.log error
       @timeline.hide()
