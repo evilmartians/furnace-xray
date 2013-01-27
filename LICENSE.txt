@@ -1,4 +1,4 @@
-Copyright (c) 2012 Sasha Koss
+Copyright (c) 2013  Boris Staal
 
 MIT License
 
