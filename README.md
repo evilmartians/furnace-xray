@@ -42,7 +42,7 @@ To view collected data, just point furnace-xray to it:
     == Sinatra/1.3.3 has taken the stage on 4567 for development with backup from WEBrick
     [2013-01-27 20:05:13] INFO  WEBrick::HTTPServer#start: pid=28695 port=4567
 
-Now, open your <strike>browser</strike> Chrome or Chromium and point it to
+Now, open your ~~browser~~ Chrome or Chromium and point it to
 `http://localhost:4567`.
 
 ## Contributing
