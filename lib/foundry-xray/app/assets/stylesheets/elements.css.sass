@@ -11,8 +11,21 @@ sup
   line-height: 1
   bottom: 1.4ex
 
-blockquote
-  padding-left: 2em
+div.block
 
-  div
-    text-indent: -1em
+  & > span
+    padding-bottom: 5px
+    display: block
+
+  div.line
+    padding-left: 2em
+    line-height: 1.2em
+
+    div
+      text-indent: -1em
+
+    &.diff-removed
+      background-color: rgb(255, 221, 221)
+
+    &.diff-added
+      background-color: rgb(221, 255, 221)

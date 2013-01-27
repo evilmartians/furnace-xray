@@ -4,7 +4,9 @@
 class @Map
   constructor: (@title) ->
     @data = []
-    @map  = {}
+    @map  = Object.extended()
+
+  each: (block) -> @map.each block
 
   add: (name, block) ->
     id = @data.findIndex(name)

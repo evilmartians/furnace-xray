@@ -37,19 +37,25 @@ class @Input
       x.id < @events.length-1
 
     @reset()
+    @skipState = true
 
   reset: ->
     @types           = Object.extended()
     @blocks          = Object.extended()
     @instructions    = Object.extended()
-    @visibleEvents   = Object.extended()
     @blocksMap       = new Map 'blocks'
     @instructionsMap = new Map 'instructions'
 
     @function = new FunctionNode(@source.name, @source.present)
-    @run(@cursor = 0)
+    @cursor   = 0
+
+    # run first step at initialization
+    i = -1; @run(i) while (i+=1) <= (@events[1] || @source.events.length-1)
 
   rewind: (to) ->
+    return if to == @cursor
+    @previousState = new InputState(@) unless @skipState
+    @skipState = false
     @reset() if to < @cursor
     @increment(to)
 
@@ -76,6 +82,7 @@ class @Input
     if type = @types[id]
       return type
     else
+      @reset()
       throw "Type #{id} not found in #{@types.keys().join(',')}"
 
   setReturnType: (event) ->

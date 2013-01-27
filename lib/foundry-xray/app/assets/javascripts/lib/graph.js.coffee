@@ -8,11 +8,11 @@ class @Graph
     @edges     = []
     blockNodes = Object.extended()
 
-    @input.blocks.each (i, b) ->
+    @input.blocks.each (i, b) =>
       blockNodes[b.name] =
         edges: b.references()
         label: b.name
-        data: b.title()
+        data: b.title(@input.previousState?.blocks[b.name])
 
     blockNodes.each (i, n) =>
       edges = []

@@ -50,12 +50,14 @@ class @Drawer
     @constructor.zoomTo @zoomValue...
 
   zoomNode: (width, height, name) ->
+    node = @container.select("#node-#{name}")
+    return if node.empty()
+
     padding = @constructor.canvasPadding
     width   = width-padding*2
     height  = height-padding*2
 
     zoom = @constructor.zoom.scale()
-    node = @container.select("#node-#{name}")
     bbox = node[0][0].getBBox()
 
     if width < bbox.width*zoom || height < bbox.height*zoom
