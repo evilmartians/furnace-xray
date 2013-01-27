@@ -7,17 +7,17 @@ require 'trollop'
 lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
 $LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
 
-require 'foundry-xray/version'
-require 'foundry-xray/app/app'
+require 'furnace-xray/version'
+require 'furnace-xray/app/app'
 
 opts = Trollop::options do
-  version "foundry-xray #{Foundry::Xray::VERSION}"
+  version "furnace-xray #{Furnace::Xray::VERSION}"
 
   banner <<-EOS
-Usage: foundry-xray <filename>
+Usage: furnace-xray <filename>
   EOS
 end
 
 Trollop::die "File not specified or does not exist" unless ARGV[0] && File.exist?(ARGV[0])
 
-Foundry::Xray::App.run! ARGV[0]
+Furnace::Xray::App.run! ARGV[0]

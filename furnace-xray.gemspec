@@ -3,16 +3,16 @@
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
-require 'foundry-xray/version'
+require 'furnace-xray/version'
 
 Gem::Specification.new do |gem|
-  gem.name          = 'foundry-xray'
-  gem.version       = Foundry::Xray::VERSION
-  gem.authors       = ['Sasha Koss']
-  gem.email         = ['koss@nocorp.me']
-  gem.description   = 'TODO: Write a gem description'
-  gem.summary       = 'TODO: Write a gem summary'
-  gem.homepage      = ''
+  gem.name          = 'furnace-xray'
+  gem.version       = Furnace::Xray::VERSION
+  gem.authors       = ['Boris Staal']
+  gem.email         = ['staal@evl.ms']
+  gem.description   = 'A visualizer for transformations of code in Static Single Assignment form based on the Furnace library.'
+  gem.summary       = gem.description
+  gem.homepage      = 'https://github.com/evilmartians/furnace-xray'
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }

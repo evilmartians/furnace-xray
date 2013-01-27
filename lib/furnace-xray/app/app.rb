@@ -11,7 +11,7 @@ require 'coffee-script'
 
 require_relative '../lib/jst_pages'
 
-module Foundry
+module Furnace
   module Xray
     class App < Sinatra::Base
       register Sinatra::Sprockets

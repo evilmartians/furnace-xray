@@ -1,0 +1,1 @@
+require 'furnace-xray/version'
