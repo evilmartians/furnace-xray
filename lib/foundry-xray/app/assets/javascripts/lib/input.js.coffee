@@ -37,7 +37,6 @@ class @Input
       x.id < @events.length-1
 
     @reset()
-    @skipState = true
 
   reset: ->
     @types           = Object.extended()
@@ -54,9 +53,14 @@ class @Input
 
   rewind: (to) ->
     return if to == @cursor
-    @previousState = new InputState(@) unless @skipState
-    @skipState = false
-    @reset() if to < @cursor
+
+    if to < @cursor
+      delete @previousState
+      @reset()
+    else
+      @previousState = new InputState(@)
+
+    @reset() 
     @increment(to)
 
   increment: (to) ->

@@ -23,6 +23,7 @@ class Application
     @title     = $('#title')
     @transform = $('#transform')
     @selector  = $('#functions select')
+    @diff      = $('#diff')
 
     @zoomButton = $('#zoom button')
 
@@ -61,6 +62,7 @@ class Application
       @timeline.show()
       @title.removeClass('error')
       @transform.removeClass('active').html('')
+      @diff.html('')
 
       input = @data[@currentFunction]
 
@@ -72,6 +74,7 @@ class Application
       @drawer = new Drawer(new Graph(@input))
 
       @title.html @input.function.title()
+      @diff.html "~ " + @input.previousState.cursor if @input.previousState?.cursor?
 
       @renewZoomer()
       @renewSelector()
