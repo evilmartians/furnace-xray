@@ -47,6 +47,8 @@ To view collected data, just point furnace-xray to it:
 Now, open your ~~browser~~ Chrome or Chromium and point it to
 http://localhost:4567.
 
+![](http://f.cl.ly/items/2t0p052l1J1m283r2W2b/furnace-xray.png)
+
 ## Contributing
 
 1. Fork it
