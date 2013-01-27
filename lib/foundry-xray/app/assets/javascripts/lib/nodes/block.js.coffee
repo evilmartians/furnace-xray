@@ -32,8 +32,6 @@ class @BlockNode
         else
           added[i] = currentTitle
 
-      extendedLength = 0
-
       for ps, i in previousState
         if !ps.newPosition?
           position = 0
