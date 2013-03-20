@@ -14,14 +14,14 @@ class @Input
     transforms = Object.extended()
 
     @source.events.each (x, i) =>
-      switch x.event 
+      switch x.event
         when 'addInstruction'
           reducer.add x.name
           @events.add i
         when 'removeInstruction'
           reducer.exclude x.name
           @events.add i
-        when 'updateInstruction'
+        when 'updateInstruction', 'renameInstruction'
           @events.add i if reducer.any(x.name)
         when 'type', 'transformStart'
         else
@@ -32,7 +32,7 @@ class @Input
         transforms[id] = {id: id, label: x.name}
 
     @transforms = transforms.values()
-    @transforms = @transforms.filter (x, i) => 
+    @transforms = @transforms.filter (x, i) =>
       x.length = (@transforms[i+1]?.id || @events.length) - x.id
       x.id < @events.length-1
 
@@ -60,7 +60,7 @@ class @Input
     else
       @previousState = new InputState(@)
 
-    @reset() 
+    @reset()
     @increment(to)
 
   increment: (to) ->
@@ -130,5 +130,9 @@ class @Input
   removeInstruction: (event) ->
     @instructionsMap.locate event.name, (i) =>
       @instructions[i].unlink()
+
+  renameInstruction: (event) ->
+    @instructionsMap.locate event.name, (i) =>
+      @instructions[i].name = event.new_name
 
   transformStart: (event) ->
