@@ -123,16 +123,18 @@ class @Input
     @instructions[id].update event.opcode, event.name, event.parameters, operands, @type(event.type)
 
   addInstruction: (event) ->
-    @instructionsMap.locateOrAdd event.name, (i) =>
-      @blocksMap.locate event.basic_block, (b) =>
-        @instructions[i].link @blocks[b], event.index
+    id = @instructionsMap.add event.name, (id) =>
+      @instructions[id] = new InstructionNode(event.name)
+
+    @blocksMap.locate event.basic_block, (b) =>
+      @instructions[id].link @blocks[b], event.index
 
   removeInstruction: (event) ->
-    @instructionsMap.locate event.name, (i) =>
-      @instructions[i].unlink()
+    @instructionsMap.locate event.name, (id) =>
+      @instructions[id].unlink()
 
   renameInstruction: (event) ->
-    @instructionsMap.rename event.name, event.new_name, (i) =>
-      @instructions[i].name = event.new_name
+    @instructionsMap.rename event.name, event.new_name, (id) =>
+      @instructions[id].name = event.new_name
 
   transformStart: (event) ->

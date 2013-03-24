@@ -43,6 +43,3 @@ class @Map
 
   locate: (name, block) ->
     block(@find(name))
-
-  locateOrAdd: (name, block) ->
-    block(@add(name))

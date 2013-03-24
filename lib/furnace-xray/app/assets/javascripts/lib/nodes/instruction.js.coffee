@@ -1,6 +1,7 @@
 class @InstructionNode
-  constructor: ->
+  constructor: (@name) ->
     @blocks = []
+    @operands = []
 
   update: (@opcode, @name, @parameters, @operands, @type) ->
 
@@ -19,7 +20,7 @@ class @InstructionNode
       else
         "%#{x[0]} => #{x[1].title()}"
 
-    if @type.kind == 'void'
+    if !@type || @type.kind == 'void'
       JST['nodes/instruction_void']
         opcode: @opcode
         parameters: @parameters
