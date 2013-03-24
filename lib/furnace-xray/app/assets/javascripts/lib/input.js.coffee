@@ -123,7 +123,7 @@ class @Input
     @instructions[id].update event.opcode, event.name, event.parameters, operands, @type(event.type)
 
   addInstruction: (event) ->
-    @instructionsMap.locate event.name, (i) =>
+    @instructionsMap.locateOrAdd event.name, (i) =>
       @blocksMap.locate event.basic_block, (b) =>
         @instructions[i].link @blocks[b], event.index
 
@@ -132,7 +132,7 @@ class @Input
       @instructions[i].unlink()
 
   renameInstruction: (event) ->
-    @instructionsMap.locate event.name, (i) =>
+    @instructionsMap.rename event.name, event.new_name, (i) =>
       @instructions[i].name = event.new_name
 
   transformStart: (event) ->

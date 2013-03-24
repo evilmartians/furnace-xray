@@ -9,9 +9,9 @@ class @Map
   each: (block) -> @map.each block
 
   add: (name, block) ->
-    id = @data.findIndex(name)
+    id = @map[name]
 
-    if id < 0
+    unless id?
       @data.add name
       id = @data.length-1
       block(id) if block
@@ -22,7 +22,7 @@ class @Map
   find: (name) ->
     id = @map[name]
 
-    if id < 0 
+    unless id?
       error = "Map '#{@title}': '#{name}' element not found"
       throw error
 
@@ -43,3 +43,6 @@ class @Map
 
   locate: (name, block) ->
     block(@find(name))
+
+  locateOrAdd: (name, block) ->
+    block(@add(name))
