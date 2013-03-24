@@ -5,9 +5,10 @@
 
     %link{:href => "data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=", :rel => "icon", :type => "image/x-icon"}
 
-    = javascript_include_tag 'application'
-    = javascript_include_tag '/jst'
-    = stylesheet_link_tag 'app'
+    %link{:href => '/assets/app.css', :rel => 'stylesheet', :type => 'text/css'}
+
+    %script{:src => '/assets/application.js', :type => 'text/javascript'}
+    %script{:src => '/jst.js', :type => 'text/javascript'}
 
     :javascript
       window.data = Input.normalize(#{File.read settings.json_location})

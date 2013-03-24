@@ -19,15 +19,15 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ['lib']
 
-  gem.add_dependency 'trollop'
-  gem.add_dependency 'sprockets', '~> 2.0.0'
   gem.add_dependency 'sinatra'
-  gem.add_dependency 'sinatra-sprockets-ext'
+  gem.add_dependency 'trollop'
   gem.add_dependency 'activesupport'
-  gem.add_dependency 'sprockets-vendor_gems'
-  gem.add_dependency 'haml'
-  gem.add_dependency 'sass'
-  gem.add_dependency 'sprockets-sass'
-  gem.add_dependency 'compass'
+
+  gem.add_dependency 'haml',                      '3.1.7'
+  gem.add_dependency 'sass',                      '3.2.5'
+  gem.add_dependency 'sprockets',                 '2.8.2'
+  gem.add_dependency 'sprockets-sass',            '0.9.1'
+  gem.add_dependency 'sprockets-helpers',         '0.8.0'
   gem.add_dependency 'coffee-script'
+  gem.add_dependency 'compass'
 end
