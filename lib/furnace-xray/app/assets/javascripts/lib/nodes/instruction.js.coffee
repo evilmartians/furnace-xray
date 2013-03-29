@@ -1,34 +1,53 @@
-class @InstructionNode
-  constructor: (@name) ->
-    @blocks = []
-    @operands = []
+class @InstructionNode extends Node
+  constructor: (data, map) ->
+    super
+    @blocks = Object.extended()
 
-  update: (@opcode, @name, @parameters, @operands, @type) ->
+  linkBlock: (block) ->
+    @blocks[block.id] = block
+    @operands?.each (x) => x.linkBlock(block) if x['linkBlock']?
 
-  link: (block, index) ->
-    block.addInstruction(@, index)
-    @blocks.add block
+  unlinkBlock: (block) ->
+    delete @blocks[block.id]
+    @operands?.each (x) => x.unlinkBlock(block) if x['unlinkBlock']?
 
-  unlink: ->
-    @blocks.each (x) => x.removeInstruction(@)
-    @blocks = []
+  attachedFunctions: ->
+    result = {}
+    @blocks.values().each (x) -> Object.merge result, x.attachedFunctions()
+    result
+
+  update: (data, map) ->
+    @type       = @locate(data['type'], map)
+    @name       = data['name']
+    @opcode     = data['opcode']
+    @parameters = data['parameters']
+
+    if data['operand_ids']
+      @updateOperands(data['operand_ids'], map)
+    else
+      @operands = null
+
+  updateOperands: (data, map) ->
+    @operands = data.map (x) => @locate(x, map)
 
   title: ->
-    operands = @operands.map (x) ->
-      if x instanceof OperandNode
-        x.title()
-      else
-        "%#{x[0]} => #{x[1].title()}"
-
-    if !@type || @type.kind == 'void'
-      JST['nodes/instruction_void']
-        opcode: @opcode
-        parameters: @parameters
-        operands: operands.join(', ')
-    else
-      JST['nodes/instruction_typed']
+    if @type && !@type.void()
+      JST['nodes/instruction']
         type: @type.title()
         name: @name
         opcode: @opcode
         parameters: @parameters
-        operands: operands.join(', ')
+        operands: @titleizeOperands()
+    else
+      JST['nodes/instruction_void']
+        opcode: @opcode
+        parameters: @parameters
+        operands: @titleizeOperands()
+
+  titleizeOperands: ->
+    return "<DETACHED>" unless @operands
+    @operands.map((x) -> x.operandTitle()).join(', ')
+
+  operandTitle: ->
+    JST['nodes/operands/instruction']
+      name: @name

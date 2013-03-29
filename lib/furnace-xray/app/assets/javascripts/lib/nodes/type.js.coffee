@@ -1,12 +1,9 @@
-class @TypeNode
+class @TypeNode extends Node
 
-  constructor: (@kind, @name, @parameters) ->
+  update: (data, map) ->
+    @name = data['name']
+
+  void: () -> false
 
   title: ->
-    switch @kind
-      when 'void' then JST['nodes/type_constant'](type: 'void')
-      when 'monotype' then JST['nodes/type_constant'](type: @name)
-      when 'parametric'
-        JST['nodes/type_parametric']
-          type: @name
-          parameters: @parameters.map((x) -> x.title()).join(', ')
+    JST['nodes/type'](type: @name)

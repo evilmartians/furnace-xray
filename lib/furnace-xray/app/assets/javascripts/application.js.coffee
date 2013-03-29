@@ -64,16 +64,16 @@ class Application
       @transform.removeClass('active').html('')
       @diff.html('')
 
-      input = @data[@currentFunction]
+      input = Input.functions[@currentFunction].input
 
-      Drawer.reset() if @input?.source.name != input.source.name
+      Drawer.reset() if @input?.function.name != input.function.name
       Drawer.clear()
 
       @input = input
       @input.rewind(@currentStep)
       @drawer = new Drawer(new Graph(@input))
 
-      @title.html @input.function.title()
+      @title.html @input.map[@input.function.id]?.title()
       @diff.html "~ " + @input.previousState.cursor if @input.previousState?.cursor?
 
       @renewZoomer()
@@ -87,7 +87,7 @@ class Application
 
   dehasherize: ->
     hash = window.location.hash.from(1)
-    hash = "0:#{@data[0].events.length-1}" if hash.length == 0
+    hash = "0:#{Input.functions[0].input.events.length-1}" if hash.length == 0
     [@currentFunction, @currentStep] = hash.split(":").map (x) -> x.toNumber()
 
   jumpTo: (func, step) ->
@@ -95,8 +95,8 @@ class Application
       @selector.find('option').each (x) ->
         func = $(@).attr('value').toNumber() if $(@).text() == func
 
-    @currentFunction = func; step = @data[func].events.length-1 if step == undefined
-    @currentStep     = [step, @data[func].events.length-1].min()
+    @currentFunction = func; step = Input.functions[func].input.events.length-1 if step == undefined
+    @currentStep     = [step, Input.functions[func].input.events.length-1].min()
     @currentStep     = [0, @currentStep].max()
     window.location.hash = "#{@currentFunction}:#{@currentStep || 0}"
 
@@ -162,9 +162,9 @@ class Application
   buildSelector: ->
     groups = ['Present', 'Removed'].map (x) -> $("<optgroup label='#{x}'></optgroup>")
 
-    @data.each (f, i) =>
-      group = if f.source.present then groups[0] else groups[1]
-      group.append "<option value='#{i}'>#{f.source.name}</option>"
+    Input.functions.each (f, i) ->
+      group = if f.present then groups[0] else groups[1]
+      group.append "<option value='#{i}'>#{f.name}</option>"
 
     groups.each (x) => @selector.append x
 

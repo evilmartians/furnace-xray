@@ -2,61 +2,63 @@
 # Internal representation of input JSON
 #
 class @Input
-  @normalize: (data) ->
-    data.map (x) -> new Input(x)
-
-  constructor: (@source) ->
-    @source.events.each (x) -> x.event = x.event.camelize(false)
-
-    # Scan for effective events
-    @events = []
-    reducer = []
+  @normalize: (@events) =>
+    @functions = []
+    events     = Object.extended()
     transforms = Object.extended()
 
-    @source.events.each (x, i) =>
-      switch x.event
-        when 'addInstruction'
-          reducer.add x.name
-          @events.add i
-        when 'removeInstruction'
-          reducer.exclude x.name
-          @events.add i
-        when 'updateInstruction', 'renameInstruction'
-          @events.add i if reducer.any(x.name)
-        when 'type', 'transformStart'
-        else
-          @events.add i
+    @events.each (event, i) =>
+      if event['kind'] == 'transform'
+        f = event['function_id']
 
-      if x.event == 'transformStart'
-        id = @events.length-1
-        transforms[id] = {id: id, label: x.name}
+        transforms[f] ||= []
+        transforms[f].push
+          id: events[f].length - 1
+          label: event['name']
+      else
+        node = Node.refresh(event)
+        
+        if node.attachedFunctions?
+          Object.each node.attachedFunctions(), (id, f) =>
+            events[id] ||= []
+            events[id].push i
 
-    @transforms = transforms.values()
+    Node.kinds['function'].each (f) =>
+      @functions.push
+        name: f.name
+        present: f.present
+        input: new Input(f, events[f.id], transforms[f.id])
+
+  @constantize: (kind) ->
+    result = window[kind.camelize()+'Node']
+    result
+
+  constructor: (@function, @events, @transforms) ->
     @transforms = @transforms.filter (x, i) =>
       x.length = (@transforms[i+1]?.id || @events.length) - x.id
-      x.id < @events.length-1
+      x.id < @events.length-1 && x.length > 0
 
     @reset()
 
+  activeBlocks: ->
+    data = @kinds['basic_block']?.findAll (b) =>
+      b.attachedFunctions()[@function.id]?
+
+    data || []
+
   reset: ->
-    @types           = Object.extended()
-    @blocks          = Object.extended()
-    @instructions    = Object.extended()
-    @blocksMap       = new Map 'blocks'
-    @instructionsMap = new Map 'instructions'
+    @map    = Object.extended()
+    @kinds  = Object.extended()
+    @cursor = 0
 
-    @function = new FunctionNode(@source.name, @source.present)
-    @cursor   = 0
-
-    # run first step at initialization
-    i = -1; @run(i) while (i+=1) <= (@events[1] || @source.events.length-1)
+    # run upcoming steps at initialization
+    i = -1; @run(i) while (i+=1) < @events[0]
 
   rewind: (to) ->
     return if to == @cursor
 
     if to < @cursor
       delete @previousState
-      @reset()
     else
       @previousState = new InputState(@)
 
@@ -72,69 +74,4 @@ class @Input
     @cursor = stop
 
   run: (step) ->
-    event = @source.events[step]
-
-    if event.event == 'type'
-      @types[event.id] = new TypeNode(event.kind, event.name, event.parameters)
-    else
-      @[event.event]?(event)
-      console.log "UNKNOWN EVENT: #{event.event}" unless @[event.event]?
-
-  type: (id) ->
-    return undefined unless id?
-
-    if type = @types[id]
-      return type
-    else
-      @reset()
-      throw "Type #{id} not found in #{@types.keys().join(',')}"
-
-  setReturnType: (event) ->
-    @function.setReturnType @type(event.return_type)
-
-  setArguments: (event) ->
-    @function.setArguments(event.arguments.map (x) =>
-      new ArgumentNode(x.name, @type(x.type)))
-
-  addBasicBlock: (event) ->
-    @blocksMap.add event.name, (id) =>
-      @blocks[id] = new BlockNode(event.name)
-
-  removeBasicBlock: (event) ->
-    @blocksMap.remove event.name, (id) =>
-      delete @blocks[id]
-
-  renameBasicBlock: (event) ->
-    @blocksMap.rename event.name, event.new_name, (id) =>
-      @blocks[id].setName(event.new_name)
-
-  updateInstruction: (event) ->
-    id = @instructionsMap.add event.name, (id) =>
-      @instructions[id] = new InstructionNode
-
-    if Object.isArray(event.operands)
-      operands = event.operands.map (x) =>
-        new OperandNode x.kind, @type(x.type), x.name, x.value
-    else
-      operands = []
-      Object.each event.operands, (key, x) =>
-        operands.push [key, new OperandNode(x.kind, @type(x.type), x.name, x.value)]
-
-    @instructions[id].update event.opcode, event.name, event.parameters, operands, @type(event.type)
-
-  addInstruction: (event) ->
-    id = @instructionsMap.add event.name, (id) =>
-      @instructions[id] = new InstructionNode(event.name)
-
-    @blocksMap.locate event.basic_block, (b) =>
-      @instructions[id].link @blocks[b], event.index
-
-  removeInstruction: (event) ->
-    @instructionsMap.locate event.name, (id) =>
-      @instructions[id].unlink()
-
-  renameInstruction: (event) ->
-    @instructionsMap.rename event.name, event.new_name, (id) =>
-      @instructions[id].name = event.new_name
-
-  transformStart: (event) ->
+    node = Node.refresh(Input.events[step], @map, @kinds)
